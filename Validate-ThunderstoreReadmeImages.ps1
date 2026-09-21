@@ -17,14 +17,15 @@ if (-not (Test-Path -LiteralPath $ReadmePath)) {
 }
 
 $raw = [IO.File]::ReadAllText($ReadmePath)
-$matches = [regex]::Matches($raw, '!\[([^\]]*)\]\(([^)]+)\)')
-if ($matches.Count -eq 0) {
+# Do not name this $matches — PowerShell -match overwrites the automatic $matches variable.
+$imageHits = [regex]::Matches($raw, '!\[([^\]]*)\]\(([^)]+)\)')
+if ($imageHits.Count -eq 0) {
   Write-Host "No markdown images found (OK if text-only)."
   exit 0
 }
 
 $failed = @()
-foreach ($m in $matches) {
+foreach ($m in $imageHits) {
   $alt = $m.Groups[1].Value
   $url = $m.Groups[2].Value.Trim()
 
@@ -80,5 +81,5 @@ if ($failed.Count -gt 0) {
   exit 1
 }
 
-Write-Host "`nAll $($matches.Count) README images OK. Safe to pack Thunderstore." -ForegroundColor Green
+Write-Host "`nAll $($imageHits.Count) README images OK. Safe to pack Thunderstore." -ForegroundColor Green
 exit 0
