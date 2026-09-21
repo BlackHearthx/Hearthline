@@ -1,0 +1,15 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+uploads/
+agent-tools/
+.idea/
+*.dll
+!thunderstore/icon.png
+!icon.png
+*.tar.gz
+_ref_peek/
+.cursor/
+Directory.Build.props.user

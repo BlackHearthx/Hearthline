@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <!-- Copy to Directory.Build.props.user (gitignored) if your paths differ. -->
+    <ValheimMods>D:\Valheim Mods</ValheimMods>
+    <ValheimInstall>C:\Program Files (x86)\Steam\steamapps\common\Valheim</ValheimInstall>
+    <MOD_DEPLOYPATH>C:\Users\Sergi\AppData\Roaming\Thunderstore Mod Manager\DataFolder\Valheim\profiles\Mod tests\BepInEx\plugins\blackhearthx-Hearthline</MOD_DEPLOYPATH>
+  </PropertyGroup>
+</Project>

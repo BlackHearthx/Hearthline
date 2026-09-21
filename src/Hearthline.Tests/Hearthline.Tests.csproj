@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Hearthline\Bloodline.cs" Link="Bloodline.cs" />
+    <Compile Include="..\Hearthline\WildHerd.cs" Link="WildHerd.cs" />
+    <Compile Include="..\Hearthline\YardTables.cs" Link="YardTables.cs" />
+    <Compile Include="..\Hearthline\YardBreeding.cs" Link="YardBreeding.cs" />
+    <Compile Include="..\Hearthline\StealCarryLogic.cs" Link="StealCarryLogic.cs" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

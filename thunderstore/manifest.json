@@ -1,0 +1,9 @@
+{
+  "name": "Hearthline",
+  "version_number": "0.3.14",
+  "website_url": "https://github.com/BlackHearthx/Hearthline",
+  "description": "Breed stronger livestock ★ · favorite meals · steal wild cubs with Z · yard hover & mate draw",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2350"
+  ]
+}

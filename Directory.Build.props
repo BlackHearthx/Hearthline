@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <Deterministic>true</Deterministic>
+    <!-- Sibling of Hearthwife / Hearthwait. Override in Directory.Build.props.user if needed. -->
+    <ValheimMods Condition="'$(ValheimMods)' == ''">D:\Valheim Mods</ValheimMods>
+    <ValheimInstall Condition="'$(ValheimInstall)' == ''">$(VALHEIM_INSTALL)</ValheimInstall>
+    <ValheimInstall Condition="'$(ValheimInstall)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Valheim</ValheimInstall>
+    <BepInExPath Condition="'$(BepInExPath)' == ''">$(ValheimInstall)\BepInEx</BepInExPath>
+    <ManagedPath Condition="'$(ManagedPath)' == ''">$(ValheimInstall)\valheim_Data\Managed</ManagedPath>
+  </PropertyGroup>
+  <!-- MSBuild does not auto-import *.props.user; pull Thunderstore Mod tests MOD_DEPLOYPATH. -->
+  <Import Project="$(MSBuildThisFileDirectory)Directory.Build.props.user"
+          Condition="Exists('$(MSBuildThisFileDirectory)Directory.Build.props.user')" />
+</Project>
