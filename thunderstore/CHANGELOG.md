@@ -1,3 +1,6 @@
+## 1.0.1
+- Thunderstore README: clearer “what you get” and how-to for players.
+
 ## 1.0.0
 - First stable release for Thunderstore.
 - Breed ★ chance (5% default, 25% on favorite meal), steal/carry on Z, wild herds, yard hover, mate draw.

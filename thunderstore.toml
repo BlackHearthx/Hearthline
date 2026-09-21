@@ -4,7 +4,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "BlackHearthx"
 name = "Hearthline"
-versionNumber = "1.0.0"
+versionNumber = "1.0.1"
 description = "Breed stronger livestock. Favorite meals. Steal wild cubs with Z. Yard hover and mate draw."
 websiteUrl = "https://github.com/BlackHearthx/Hearthline"
 containsNsfwContent = false
