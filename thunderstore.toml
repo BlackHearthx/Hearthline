@@ -1,0 +1,33 @@
+﻿[config]
+schemaVersion = "0.0.1"
+
+[package]
+namespace = "BlackHearthx"
+name = "Hearthline"
+versionNumber = "1.0.0"
+description = "Breed stronger livestock. Favorite meals. Steal wild cubs with Z. Yard hover and mate draw."
+websiteUrl = "https://github.com/BlackHearthx/Hearthline"
+containsNsfwContent = false
+
+[package.dependencies]
+"denikson-BepInExPack_Valheim" = "5.4.2350"
+
+[build]
+icon = "./thunderstore/icon.png"
+readme = "./thunderstore/README.md"
+outdir = "./dist/tcli"
+
+[[build.copy]]
+source = "./bin/Hearthline/BlackHearthx.Hearthline.dll"
+target = "./"
+
+[[build.copy]]
+source = "./thunderstore/CHANGELOG.md"
+target = "./"
+
+[publish]
+repository = "https://thunderstore.io"
+communities = ["valheim"]
+
+[publish.categories]
+valheim = ["mods"]
