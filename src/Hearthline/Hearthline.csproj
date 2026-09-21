@@ -4,7 +4,7 @@
     <AssemblyName>BlackHearthx.Hearthline</AssemblyName>
     <RootNamespace>BlackHearthx.Hearthline</RootNamespace>
     <Description>Chance for tamed offspring to be born one star above the parent.</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

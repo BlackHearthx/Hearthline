@@ -1,3 +1,6 @@
+## 1.0.2
+- README hero: feature overview panel instead of the package cover icon.
+
 ## 1.0.1
 - Thunderstore README: clearer “what you get” and how-to for players.
 

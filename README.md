@@ -1,6 +1,6 @@
 # Hearthline
 
-![Hearthline](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/icon.png)
+![What Hearthline adds](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/docs/tutorial/tutorial_00_overview.png)
 
 **Breed stronger livestock, steal wild cubs, and run a clearer yard** — one livestock mod for Valheim.
 
