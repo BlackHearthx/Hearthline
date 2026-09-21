@@ -1,6 +1,6 @@
 # Hearthline
 
-![Hearthline](https://raw.githubusercontent.com/BlackHearthx/Hearthline/main/icon.png)
+![Hearthline](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/icon.png)
 
 Raise a stronger line. Favorites feed the stars. Steal a wild cub — or carry your herd home.
 
@@ -15,7 +15,7 @@ By **BlackHearthx**.
 Offspring and eggs can be born **one ★ above** the parent.  
 Default chance **5%**; with a **favorite meal** (while still fed) **25%**. Cap is **2★** (higher needs [CLLC](https://thunderstore.io/c/valheim/p/Smoothbrain/CreatureLevelAndLootControl/)).
 
-![1. Stars & hover](https://raw.githubusercontent.com/BlackHearthx/Hearthline/main/docs/tutorial/tutorial_01_hover.png)
+![1. Stars and hover](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/docs/tutorial/tutorial_01_hover.png)
 
 ### Favorite meals (defaults)
 
@@ -30,7 +30,7 @@ Default chance **5%**; with a **favorite meal** (while still fed) **25%**. Cap i
 
 Must be a food that animal already eats. Editable in config.
 
-![2. Favorite meals](https://raw.githubusercontent.com/BlackHearthx/Hearthline/main/docs/tutorial/tutorial_02_favorite.png)
+![2. Favorite meals](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/docs/tutorial/tutorial_02_favorite.png)
 
 ---
 
@@ -57,7 +57,7 @@ Hover on livestock shows:
 Wild steal costs stamina, has a cooldown, and can aggro nearby wild adults of the same species.  
 Damage while carrying drops the animal. You cannot attack while carrying.
 
-![3. Steal & carry](https://raw.githubusercontent.com/BlackHearthx/Hearthline/main/docs/tutorial/tutorial_03_steal_carry.png)
+![3. Steal and carry](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/docs/tutorial/tutorial_03_steal_carry.png)
 
 ---
 
@@ -65,7 +65,7 @@ Damage while carrying drops the animal. You cannot attack while carrying.
 
 Wild adults can breed; babies stay wild. A soft pregnancy chance and occasional “already has a cub” spawn keep the woods from flooding.
 
-![4. Wild herds](https://raw.githubusercontent.com/BlackHearthx/Hearthline/main/docs/tutorial/tutorial_04_wild_herd.png)
+![4. Wild herds](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/docs/tutorial/tutorial_04_wild_herd.png)
 
 ---
 
