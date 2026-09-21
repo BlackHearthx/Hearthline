@@ -13,3 +13,8 @@ agent-tools/
 _ref_peek/
 .cursor/
 Directory.Build.props.user
+
+dist/
+branding/refs/ValheimDBDumper/
+branding/refs/*.zip
+

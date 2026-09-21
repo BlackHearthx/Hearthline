@@ -1,3 +1,8 @@
+## 1.0.0
+- First stable release for Thunderstore.
+- Breed ★ chance (5% default, 25% on favorite meal), steal/carry on Z, wild herds, yard hover, mate draw.
+- Production defaults: Max Star Level 2, debug/fast breed off.
+
 ## 0.3.14
 - Debug: star roll logs only on actual birth ticks (stops Fast Breeding flood).
 

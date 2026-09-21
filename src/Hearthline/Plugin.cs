@@ -13,7 +13,7 @@ namespace BlackHearthx.Hearthline
 	{
 		public const string PluginGuid = "blackhearthx.hearthline";
 		public const string PluginName = "Hearthline";
-		public const string PluginVersion = "0.3.14";
+		public const string PluginVersion = "1.0.0";
 
 		internal const string CllcGuid = "org.bepinex.plugins.creaturelevelcontrol";
 
