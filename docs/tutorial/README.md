@@ -1,13 +1,12 @@
-# Tutorial screenshots (Thunderstore README)
+# Tutorial images (Thunderstore README)
 
-Drop PNGs here with these exact names. After they are on `main`, the Thunderstore README images resolve automatically.
+Generated Valheim-style tutorial panels (same approach as Hearthwife).
 
-| File | What to capture |
+| File | Topic |
 | --- | --- |
-| `01_hover.png` | Tamed animal hover: Bond / Expecting countdown / Growing |
-| `02_favorite.png` | Hover showing favorite-meal tip after feeding a favorite |
-| `03_steal_carry.png` | Player carrying a cub or tamed adult (Z) |
-| `04_wild_herd.png` | Wild adult with a wild cub nearby, or wild birth moment |
-| `05_mate_draw.png` | Optional — two adults walking toward each other |
+| `tutorial_01_hover.png` | Stars + yard hover |
+| `tutorial_02_favorite.png` | Favorite meals |
+| `tutorial_03_steal_carry.png` | Z steal / carry |
+| `tutorial_04_wild_herd.png` | Wild herds |
 
-Tips: 16:9 or 16:10, UI readable, no debug spam on screen. Same warm homestead mood as the cover icon.
+Replace with real in-game screenshots anytime — keep the same filenames so README links stay valid.
