@@ -1,109 +1,122 @@
 # Hearthline
 
-Dois lugares, um código:
+![Hearthline](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/icon.png)
 
-| Onde | O que é |
-|---|---|
-| **Este projeto Cursor** | Repositório do Hearthline (raiz = o mod) |
-| **`D:\Valheim Mods\Hearthline`** | Cópia no disco dos teus mods, ao lado de Hearthwife / Hearthwait |
+**Breed stronger livestock, steal wild cubs, and run a clearer yard** — one livestock mod for Valheim.
 
-Nesta VM não dá para gravar no `D:`. No Windows, na raiz deste repo:
+By **BlackHearthx**.
 
-```powershell
-.\Copy-To-ValheimMods.ps1
-```
+> Feed a favorite → roll for stronger young. Spot a wild cub → **Z** to steal and carry it home. Hover the pen to see bond, pregnancy, and growth.
 
-Mod **BlackHearthx** para Valheim: parto com chance de +1 estrela, comida favorita, hover de vínculo/gravidez/crescimento, mate draw, **manada selvagem** (com freio), **roubar/carregar com Z** (E fica pet vanilla).
+**Do not install with** BreedingUpgrades or Procreation Plus (same star systems).
 
-## O que já existia (pesquisa, não inventei)
+---
 
-| Mod | Autor | O que faz | Versão conferida |
-|---|---|---|---|
-| [BreedingUpgrades](https://thunderstore.io/c/valheim/p/Dumba/BreedingUpgrades/) | Dumba | Chance global (default 5%) de +1 estrela em nascimento e ovo. Transpiler em `Character.SetLevel` + prefix em `ItemDrop.SetQuality`. README do autor: incompatível com Star Level Systems. | 1.0.2 (zip que você mandou) |
-| [Procreation Plus](https://thunderstore.io/c/valheim/p/MaxFoxGaming/Procreation_Plus/) | MaxFoxGaming | Chance **por prefab**. Sobe temporariamente `Procreation.m_minOffspringLevel` no Prefix de `Procreate` e restaura no Postfix. | 1.2.1 (fonte no Thunderstore) / 1.2.2 na página |
+## What you get
 
-Vanilla (confirmado no decompile público de `Procreation.Procreate`, o mesmo bloco usado por HogRiders / yggdrahsbetterhorse):
+| Feature | What it means in play |
+| --- | --- |
+| **Stronger young** | Babies and eggs can be born **+1★** above the parent |
+| **Favorite meals** | Right food → much higher star chance while still fed |
+| **Steal and carry** | **Z** grabs wild young (or carries your tamed animals) |
+| **Yard hover** | Bond, expecting timer, pen full, cub growth — at a glance |
+| **Mate draw** | Fed, calm adults walk toward a partner so breeding starts sooner |
+| **Wild herds** | Wild adults can breed; cubs stay wild (soft limits so woods do not explode) |
 
-```
-character.SetLevel(Mathf.Max(m_minOffspringLevel, parent.GetLevel()));
-// ovos:
-itemDrop.SetQuality(Mathf.Max(m_minOffspringLevel, parent.GetLevel()));
-```
+Star cap is **2★**. For higher stars you need [CLLC](https://thunderstore.io/c/valheim/p/Smoothbrain/CreatureLevelAndLootControl/).
 
-Hearthline usa o gancho do **Procreation Plus** (`m_minOffspringLevel`), não o transpiler do Dumba: um único patch cobre javali/lobo/lox/alce **e** ovos de galinha/asksvin, sem desviar `SetLevel`.
+---
 
-Níveis vanilla: 0★ = level 1, 1★ = level 2, 2★ = level 3.
+## How to play
 
-## Manadas selvagens — o que o vanilla permite
+### 1. Breed for stars
 
-**Confirmado no `Procreate` vanilla:**
+Keep two fed adults of the same species. When a baby (or egg) is born, there is a chance it is **one star above** the parent.
 
-1. O método **sai imediatamente** se o adulto não estiver tamed (guard atual: `m_tameable.IsTamed()`). Selvagem **não** procria sem patch.
-2. O bebê **não é inventado**: nasce de `Procreation.m_offspring`. Prefabs com `Growup` listados no Valheim Tools: `Boar_piggy`, `Wolf_cub`, `Lox_Calf`, `Chicken`, `Asksvin_hatchling`, `Moose_calf`. Ovos: `ChickenEgg`, `AsksvinEgg`.
-3. No parto: `SetTamed(parent.IsTamed())`. Pai selvagem → filhote **selvagem**.
-4. Parceiro: `SpawnSystem.GetNrOfInstances(..., procreationOnly: true)` só conta quem passa em `ReadyForProcreation()`.
-5. `Tameable.IsHungry()`: compara `TameLastFeeding` com `m_fedDuration`. Sem comida no chão o timestamp é 0 → **sempre faminto**. Sem ignorar fome, manada selvagem quase nunca passa.
-6. Continua valendo: não alerta, teto `m_maxCreatures`, love points, gravidez, zona carregada.
+| Situation | Chance |
+| --- | --- |
+| Normal birth | **5%** |
+| Last meal was a **favorite**, and they are still fed | **25%** |
 
-**Extra Hearthline:** chance de um adulto selvagem já aparecer com 1 cria Growup perto (`Wild Family Spawn Chance`).
+![1. Stars and hover](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/docs/tutorial/tutorial_01_hover.png)
 
-## Config (`BepInEx/config/blackhearthx.hearthline.cfg`)
+### 2. Feed favorites
 
-| Chave | Default | Efeito |
-|---|---|---|
-| Enable Mod | true | Liga/desliga |
-| Upgrade Chance | 5% | Chance de +1 estrela |
-| Max Star Level | 2 | Teto vanilla. Acima de 2 só com CLLC |
-| Lock Configuration | true | ServerSync |
-| Enable Debug Logging | false | Log verbose (nascimentos) |
-| Debug Fast Breeding | false | TEST ONLY — pregnancy/love turbo |
-| Chance Per Prefab | (vazio) | `Boar:8,Wolf:5,...` |
-| Favorite Foods | `Boar:Carrot;…` | Só IDs da lista vanilla de comida |
-| Favorite Upgrade Chance | 25% | Chance de +1★ com refeição favorita |
-| Show Yard Hover | true | Bond, Expecting countdown, pen full, Growing %, favorite note |
-| Enable Mate Draw | true | Adultos fed/calmos andam até o parceiro |
-| Wild Herds Can Procreate | true | Selvagens com `m_offspring` procriam |
-| Wild Herds Ignore Hunger | true | Ignora fome só no `Procreate` selvagem |
-| Wild Herd Pregnancy Chance | 30% | Freio em `MakePregnant` selvagem |
-| Wild Family Spawn Chance | 25% | Adulto selvagem novo pode já ter 1 cria |
-| Claim Wild Young | true | **Z** no filhote selvagem → amansa e carrega |
-| Steal Alerts Herd | true | Roubo alerta adultos da espécie |
-| Steal Alert Range | 20 | Metros |
-| Steal Cooldown Seconds | 120 | Cooldown após roubo |
-| Steal Stamina Cost | 40 | Custo de stamina |
-| Enable Cub Carry | true | **Z** pega/larga cria e adultos tamed |
-| Carry Range | 5 | Distância ao soltar |
-| Drop On Damage | true | Dano derruba o animal |
-| Block Attack While Carrying | true | Sem ataque enquanto carrega |
+Favorites must be foods that animal **already eats** in vanilla.
 
-Não use junto com BreedingUpgrades ou Procreation Plus.
+| Animal | Favorite (default) |
+| --- | --- |
+| Boar | Carrot |
+| Wolf | Raw Meat |
+| Lox | Barley |
+| Hen | Barley |
+| Asksvin | Vineberry |
+| Moose | Lingonberry |
 
-## Roubar e carregar
+![2. Favorite meals](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/docs/tutorial/tutorial_02_favorite.png)
 
-1. Manada selvagem pode gerar filhote selvagem (freio 30% + teto vanilla).
-2. **Z** no filhote → rouba (se selvagem) e carrega; em adulto tamed só carrega.
-3. **Z** de novo → solta.
-4. **E** permanece pet / interact vanilla.
+### 3. Steal and carry (**Z**)
 
-## Compilar
+| Key | Action |
+| --- | --- |
+| **Z** | Steal a **wild** young animal, or pick up / put down young and **tamed** adults |
+| **E** | Still vanilla **pet** (unchanged) |
 
-```bat
-cd /d D:\Valheim Mods\Hearthline
-dotnet build Hearthline.sln -c Release
-```
+Wild steal: costs stamina, has a cooldown, and can aggro nearby wild adults of the same species.  
+If you take damage while carrying, the animal drops. You cannot attack while carrying.
 
-Deploy de teste: Thunderstore profile **Mod tests** via `Directory.Build.props.user` → `MOD_DEPLOYPATH`.
+![3. Steal and carry](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/docs/tutorial/tutorial_03_steal_carry.png)
 
-Dependência Thunderstore: `denikson-BepInExPack_Valheim-5.4.2350`
+### 4. Read the yard
 
-ServerSync entra compilado no mesmo DLL (fonte oficial [blaxxun-boop/ServerSync](https://github.com/blaxxun-boop/ServerSync), MIT).
+Hover livestock to see:
 
-## Testes sem o jogo
+- **Bond** — love progress toward breeding  
+- **Expecting** — countdown to birth  
+- **Pen full** — no more breeding in range  
+- **Growing** — cub maturity  
+- Favorite tip when it applies  
 
-```bash
-dotnet test src/Hearthline.Tests/Hearthline.Tests.csproj
-```
+**Mate draw:** fed, calm tamed adults gently walk toward a same-species partner (stops if hungry, alert, pregnant, young, or the pen is full).
 
-## Ícone Thunderstore
+### 5. Wild herds
 
-Use o template Hearthwife + selo oficial `blackhearth_mark_official.png` no canto inferior esquerdo antes de publicar. Não redesenhar o selo.
+Wild adults with offspring can breed in the wild; babies stay wild. Soft pregnancy chance and occasional “already has a cub” spawns keep the forest from flooding.
+
+![4. Wild herds](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/docs/tutorial/tutorial_04_wild_herd.png)
+
+---
+
+## Como usar (PT-BR)
+
+**Hearthline** melhora o gado: filhotes mais fortes, comida favorita, roubar cria selvagem e ver o curral com clareza.
+
+| O que muda | Em jogo |
+| --- | --- |
+| **Filhotes ★** | Chance de nascer com **+1★** (5% normal · **25%** com comida favorita ainda alimentado) |
+| **Favoritas** | Javali cenoura · Lobo carne crua · Lox/galinha cevada · Asksvin vinhaberry · Alce lingonberry |
+| **Z** | Rouba filhote selvagem ou carrega cria / adulto **domado** (**E** continua carinho) |
+| **Hover** | Vínculo, gravidez com contagem, curral cheio, crescimento |
+| **Mate draw** | Adultos calmos e alimentados andam até o parceiro |
+| **Manadas** | Selvagens podem procriar; filhote nasce selvagem |
+
+Teto **2★** (acima disso precisa CLLC). Não use com BreedingUpgrades ou Procreation Plus.
+
+---
+
+## Requirements
+
+- [BepInExPack Valheim](https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/)
+
+## Config
+
+After first launch: `BepInEx/config/blackhearthx.hearthline.cfg`
+
+## Identity
+
+| | |
+| --- | --- |
+| Package | `blackhearthx-Hearthline` |
+| GUID | `blackhearthx.hearthline` |
+
+Thunderstore page README: [`thunderstore/README.md`](thunderstore/README.md) (same player guide; used by the package zip).
