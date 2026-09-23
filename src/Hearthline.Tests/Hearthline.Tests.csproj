@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Hearthline\Bloodline.cs" Link="Bloodline.cs" />
+    <Compile Include="..\Hearthline\AwayTame.cs" Link="AwayTame.cs" />
     <Compile Include="..\Hearthline\WildHerd.cs" Link="WildHerd.cs" />
     <Compile Include="..\Hearthline\YardTables.cs" Link="YardTables.cs" />
     <Compile Include="..\Hearthline\YardBreeding.cs" Link="YardBreeding.cs" />

@@ -13,7 +13,7 @@ namespace BlackHearthx.Hearthline
 	{
 		public const string PluginGuid = "blackhearthx.hearthline";
 		public const string PluginName = "Hearthline";
-		public const string PluginVersion = "1.0.2";
+		public const string PluginVersion = "1.0.3";
 
 		internal const string CllcGuid = "org.bepinex.plugins.creaturelevelcontrol";
 
@@ -49,6 +49,7 @@ namespace BlackHearthx.Hearthline
 		internal static ConfigEntry<float> MateDrawInterval;
 		internal static ConfigEntry<float> MateDrawPlayerRange;
 		internal static ConfigEntry<bool> ClaimWildYoung;
+		internal static ConfigEntry<bool> TameWhileAway;
 		internal static ConfigEntry<bool> EnableCubCarry;
 		internal static ConfigEntry<float> CubCarryRange;
 		internal static ConfigEntry<bool> StealAlertsHerd;
@@ -174,6 +175,11 @@ namespace BlackHearthx.Hearthline
 				new ConfigDescription(
 					"Only animals within this distance of the local player are nudged (keeps distant pens quiet).",
 					new AcceptableValueRange<float>(10f, 80f)));
+			TameWhileAway = SyncedConfig(
+				"6. Taming",
+				"Tame While Away",
+				true,
+				"Untamed adults keep taming after you leave, if their food is still on the ground nearby. Coming back applies the missed time and eats that food.");
 			ClaimWildYoung = SyncedConfig(
 				"7. Steal young",
 				"Claim Wild Young",
@@ -237,6 +243,7 @@ namespace BlackHearthx.Hearthline
 			_harmony.PatchAll(typeof(Patches.MakePregnantPatch));
 			_harmony.PatchAll(typeof(Patches.CharacterWildFamilyPatch));
 			_harmony.PatchAll(typeof(Patches.TameableConsumedPatch));
+			_harmony.PatchAll(typeof(Patches.AwayTamePatch));
 			_harmony.PatchAll(typeof(Patches.CharacterHoverPatch));
 			_harmony.PatchAll(typeof(Patches.PlayerFindHoverYoungPatch));
 			_harmony.PatchAll(typeof(Patches.TameableStealHoverPatch));

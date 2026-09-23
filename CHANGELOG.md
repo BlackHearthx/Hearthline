@@ -1,3 +1,6 @@
+## 1.0.3
+- Untamed adults keep taming while you are away, if their food is still on the ground nearby.
+
 ## 1.0.2
 - README hero: feature overview panel instead of the package cover icon.
 

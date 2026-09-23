@@ -33,6 +33,8 @@ Star cap is **2★**. For higher stars you need [CLLC](https://thunderstore.io/c
 
 Keep two fed adults of the same species. When a baby (or egg) is born, there is a chance it is **one star above** the parent.
 
+Drop an adult's food on the ground and leave. Taming keeps going while you are away. When you come back, the bar has moved and that food is gone. No food nearby means no progress.
+
 | Situation | Chance |
 | --- | --- |
 | Normal birth | **5%** |
@@ -94,6 +96,7 @@ Wild adults with offspring can breed in the wild; babies stay wild. Soft pregnan
 | O que muda | Em jogo |
 | --- | --- |
 | **Filhotes ★** | Chance de nascer com **+1★** (5% normal · **25%** com comida favorita ainda alimentado) |
+| **Doma longe** | Solta a comida do adulto e sai. A barra continua. Sem comida perto, não anda |
 | **Favoritas** | Javali cenoura · Lobo carne crua · Lox/galinha cevada · Asksvin vinhaberry · Alce lingonberry |
 | **Z** | Rouba filhote selvagem ou carrega cria / adulto **domado** (**E** continua carinho) |
 | **Hover** | Vínculo, gravidez com contagem, curral cheio, crescimento |
