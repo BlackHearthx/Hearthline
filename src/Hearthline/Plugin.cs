@@ -13,7 +13,7 @@ namespace BlackHearthx.Hearthline
 	{
 		public const string PluginGuid = "blackhearthx.hearthline";
 		public const string PluginName = "Hearthline";
-		public const string PluginVersion = "1.0.3";
+		public const string PluginVersion = "1.0.4";
 
 		internal const string CllcGuid = "org.bepinex.plugins.creaturelevelcontrol";
 
@@ -49,6 +49,7 @@ namespace BlackHearthx.Hearthline
 		internal static ConfigEntry<float> MateDrawInterval;
 		internal static ConfigEntry<float> MateDrawPlayerRange;
 		internal static ConfigEntry<bool> ClaimWildYoung;
+		internal static ConfigEntry<bool> BreedWhileAway;
 		internal static ConfigEntry<bool> TameWhileAway;
 		internal static ConfigEntry<bool> EnableCubCarry;
 		internal static ConfigEntry<float> CubCarryRange;
@@ -79,6 +80,11 @@ namespace BlackHearthx.Hearthline
 				new ConfigDescription(
 					"Percentage chance that a birth or egg is one star above the parent. Vanilla inheritance is otherwise unchanged.",
 					new AcceptableValueRange<float>(0f, 100f)));
+			BreedWhileAway = SyncedConfig(
+				"2. Breeding",
+				"Breed While Away",
+				true,
+				"Tamed adults keep love, pregnancy, and birth while you are away, up to the pen cap, if a partner is nearby and food is on the ground when they get hungry. Wild herds do not catch up.");
 			MaxStarLevel = SyncedConfig(
 				"2. Breeding",
 				"Max Star Level",
@@ -244,6 +250,7 @@ namespace BlackHearthx.Hearthline
 			_harmony.PatchAll(typeof(Patches.CharacterWildFamilyPatch));
 			_harmony.PatchAll(typeof(Patches.TameableConsumedPatch));
 			_harmony.PatchAll(typeof(Patches.AwayTamePatch));
+			_harmony.PatchAll(typeof(Patches.AwayBreedPatch));
 			_harmony.PatchAll(typeof(Patches.CharacterHoverPatch));
 			_harmony.PatchAll(typeof(Patches.PlayerFindHoverYoungPatch));
 			_harmony.PatchAll(typeof(Patches.TameableStealHoverPatch));

@@ -21,7 +21,8 @@ By **BlackHearthx**.
 | **Steal and carry** | **Z** grabs wild young (or carries your tamed animals) |
 | **Yard hover** | Bond, expecting timer, pen full, cub growth — at a glance |
 | **Mate draw** | Fed, calm adults walk toward a partner so breeding starts sooner |
-| **Wild herds** | Wild adults can breed; cubs stay wild (soft limits so woods do not explode) |
+| **While you are away** | Tamed pens keep breeding up to the cap. Wild herds do not catch up |
+| **Wild herds** | Wild adults can breed while that area is loaded; cubs stay wild |
 
 Star cap is **2★**. For higher stars you need [CLLC](https://thunderstore.io/c/valheim/p/Smoothbrain/CreatureLevelAndLootControl/).
 
@@ -33,7 +34,9 @@ Star cap is **2★**. For higher stars you need [CLLC](https://thunderstore.io/c
 
 Keep two fed adults of the same species. When a baby (or egg) is born, there is a chance it is **one star above** the parent.
 
-Drop an adult's food on the ground and leave. Taming keeps going while you are away. When you come back, the bar has moved and that food is gone. No food nearby means no progress.
+Tamed pairs keep breeding while you are away. The pen still stops at its cap. They need a partner nearby, and food on the ground once they get hungry. A pregnancy that already started still finishes. Wild herds do not catch up when that area was unloaded.
+
+Wild adults you are taming also keep filling the tame bar while you are away, if their food is still on the ground. No food nearby means that bar does not move.
 
 | Situation | Chance |
 | --- | --- |
@@ -62,7 +65,7 @@ Favorites must be foods that animal **already eats** in vanilla.
 | Key | Action |
 | --- | --- |
 | **Z** | Steal a **wild** young animal, or pick up / put down young and **tamed** adults |
-| **E** | Still vanilla **pet** (unchanged) |
+| **E** | Pet on the animal. On the saddle, **E** rides. Carry does not replace either |
 
 Wild steal: costs stamina, has a cooldown, and can aggro nearby wild adults of the same species.  
 If you take damage while carrying, the animal drops. You cannot attack while carrying.
@@ -83,7 +86,7 @@ Hover livestock to see:
 
 ### 5. Wild herds
 
-Wild adults with offspring can breed in the wild; babies stay wild. Soft pregnancy chance and occasional “already has a cub” spawns keep the forest from flooding.
+Wild adults with offspring can breed while that area is loaded; babies stay wild. Soft pregnancy chance and occasional “already has a cub” spawns keep the forest from flooding. Leaving and coming back does not fast-forward wild births.
 
 ![4. Wild herds](https://cdn.jsdelivr.net/gh/BlackHearthx/Hearthline@main/docs/tutorial/tutorial_04_wild_herd.png)
 
@@ -96,9 +99,10 @@ Wild adults with offspring can breed in the wild; babies stay wild. Soft pregnan
 | O que muda | Em jogo |
 | --- | --- |
 | **Filhotes ★** | Chance de nascer com **+1★** (5% normal · **25%** com comida favorita ainda alimentado) |
-| **Doma longe** | Solta a comida do adulto e sai. A barra continua. Sem comida perto, não anda |
+| **Cria longe** | Curral domado segue até encher. Manada selvagem não adianta quando você volta |
+| **Doma longe** | Solta a comida do adulto selvagem e sai. A barra continua. Sem comida perto, não anda |
 | **Favoritas** | Javali cenoura · Lobo carne crua · Lox/galinha cevada · Asksvin vinhaberry · Alce lingonberry |
-| **Z** | Rouba filhote selvagem ou carrega cria / adulto **domado** (**E** continua carinho) |
+| **Z** | Rouba filhote selvagem ou carrega cria / adulto **domado**. No corpo, **E** acaricia. Na sela, **E** monta |
 | **Hover** | Vínculo, gravidez com contagem, curral cheio, crescimento |
 | **Mate draw** | Adultos calmos e alimentados andam até o parceiro |
 | **Manadas** | Selvagens podem procriar; filhote nasce selvagem |

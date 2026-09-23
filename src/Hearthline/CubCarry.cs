@@ -215,6 +215,57 @@ namespace BlackHearthx.Hearthline
 			return best;
 		}
 
+		/// <summary>
+		/// Saddle only when the closest hit is the saddle object, not the horse body.
+		/// </summary>
+		internal static Sadle ClosestAimedSaddle(Player player, float maxDistance)
+		{
+			if (player == null || GameCamera.instance == null)
+			{
+				return null;
+			}
+
+			Vector3 origin = GameCamera.instance.transform.position;
+			Vector3 direction = GameCamera.instance.transform.forward;
+			Vector3 eye = player.m_eye != null ? player.m_eye.position : ((Character)player).GetEyePoint();
+			RaycastHit[] hits = Physics.RaycastAll(origin, direction, 50f, InteractMask);
+
+			foreach (RaycastHit hit in hits.OrderBy(h => h.distance))
+			{
+				if (hit.collider == null)
+				{
+					continue;
+				}
+
+				if (hit.collider.attachedRigidbody != null
+				    && hit.collider.attachedRigidbody.gameObject == player.gameObject)
+				{
+					continue;
+				}
+
+				if (Vector3.Distance(eye, hit.point) > maxDistance)
+				{
+					continue;
+				}
+
+				Sadle saddle = hit.collider.GetComponentInParent<Sadle>();
+				if (saddle == null)
+				{
+					return null;
+				}
+
+				Character mount = saddle.GetCharacter();
+				if (mount != null && saddle.transform == mount.transform)
+				{
+					return null;
+				}
+
+				return saddle;
+			}
+
+			return null;
+		}
+
 		/// <summary>Backward-compatible name used by older call sites.</summary>
 		internal static Character FindYoungUnderCrosshair(Player player, float maxDistance)
 		{

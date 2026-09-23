@@ -1,3 +1,7 @@
+## 1.0.4
+- Tamed breeding keeps going while you are away (love, pregnancy, and birth), still capped by the pen. Wild herds do not catch up.
+- The saddle keeps ride and remove-saddle. The horse keeps pet, its own commands, and Z.
+
 ## 1.0.3
 - Untamed adults keep taming while you are away, if their food is still on the ground nearby.
 

@@ -8,5 +8,7 @@ namespace BlackHearthx.Hearthline
 		public const string FamilySpawnTried = "HLFam";
 		/// <summary>World-time ticks of the last tame tick we saw while this adult was loaded.</summary>
 		public const string TameSeen = "HLTameSeen";
+		/// <summary>World-time ticks of the last Procreate tick we saw while this tamed adult was loaded.</summary>
+		public const string BreedSeen = "HLBreedSeen";
 	}
 }

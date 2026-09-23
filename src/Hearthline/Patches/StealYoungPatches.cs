@@ -4,8 +4,8 @@ using UnityEngine;
 namespace BlackHearthx.Hearthline.Patches
 {
 	/// <summary>
-	/// Carry / steal use the Z key (CubCarry.Tick). Plain E stays vanilla pet / interact.
-	/// Hover still redirects to the cub under the crosshair so prompts show.
+	/// Z stays on the horse. The saddle keeps only its own lines (ride, remove saddle).
+	/// Young animals still pull the prompt onto the cub.
 	/// </summary>
 	[HarmonyPatch(typeof(Player), "FindHoverObject")]
 	internal static class PlayerFindHoverYoungPatch
@@ -23,8 +23,15 @@ namespace BlackHearthx.Hearthline.Patches
 				return;
 			}
 
+			Sadle saddle = CubCarry.ClosestAimedSaddle(__instance, __instance.m_maxInteractDistance);
+			if (saddle != null)
+			{
+				hover = ((Component)saddle).gameObject;
+				return;
+			}
+
 			Character target = CubCarry.FindCarryTargetUnderCrosshair(__instance, __instance.m_maxInteractDistance);
-			if (target == null)
+			if (target == null || !CubCarry.IsYoung(target))
 			{
 				return;
 			}
