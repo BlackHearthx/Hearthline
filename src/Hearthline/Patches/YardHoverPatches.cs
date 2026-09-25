@@ -58,13 +58,15 @@ namespace BlackHearthx.Hearthline.Patches
 				{
 					__result = YardTables.PrettyCreatureName(
 						__instance.gameObject.name,
-						__instance.m_name);
+						__instance.m_name,
+						Lines.Language());
 				}
 
 				int grown = YardTables.GrowthPercent(ai.GetTimeSinceSpawned().TotalSeconds, growup.m_growTime);
-				if (__result.IndexOf("Growing", System.StringComparison.Ordinal) < 0)
+				string growing = Lines.F("growing", grown);
+				if (__result.IndexOf(growing, System.StringComparison.Ordinal) < 0)
 				{
-					__result += $"\nGrowing {grown}%";
+					__result += "\n" + growing;
 				}
 
 				return;
@@ -87,9 +89,10 @@ namespace BlackHearthx.Hearthline.Patches
 				return;
 			}
 
+			string language = Lines.Language();
 			int love = nview.GetZDO().GetInt(ZDOVars.s_lovePoints, 0);
 			int need = procreation.m_requiredLovePoints;
-			__result += $"\nBond {love}/{need}";
+			__result += "\n" + Lines.F("bond", love, need);
 
 			long pregnant = nview.GetZDO().GetLong(ZDOVars.s_pregnant, 0L);
 			if (pregnant != 0L)
@@ -98,8 +101,9 @@ namespace BlackHearthx.Hearthline.Patches
 					? YardBreeding.ExpectingHoverLine(
 						pregnant,
 						procreation.m_pregnancyDuration,
-						ZNet.instance.GetTime())
-					: "Expecting";
+						ZNet.instance.GetTime(),
+						language)
+					: Lines.T("expecting");
 				if (!string.IsNullOrEmpty(expecting))
 				{
 					__result += "\n" + expecting;
@@ -108,7 +112,7 @@ namespace BlackHearthx.Hearthline.Patches
 
 			if (MateDraw.IsOverCap(__instance, procreation))
 			{
-				string capLine = YardBreeding.OverCapHoverLine(true);
+				string capLine = YardBreeding.OverCapHoverLine(true, language);
 				if (!string.IsNullOrEmpty(capLine)
 				    && __result.IndexOf(capLine, System.StringComparison.Ordinal) < 0)
 				{
@@ -121,7 +125,7 @@ namespace BlackHearthx.Hearthline.Patches
 				Tameable tameable = ((Component)__instance).GetComponent<Tameable>();
 				if (tameable != null && !tameable.IsHungry())
 				{
-					__result += "\nFavorite meal — better young chance";
+					__result += "\n" + Lines.T("favorite");
 				}
 			}
 		}

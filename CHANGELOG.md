@@ -1,3 +1,6 @@
+## 1.0.5
+- Yard and carry lines follow the language you picked in Valheim.
+
 ## 1.0.4
 - Tamed breeding keeps going while you are away (love, pregnancy, and birth), still capped by the pen. Wild herds do not catch up.
 - The saddle keeps ride and remove-saddle. The horse keeps pet, its own commands, and Z.

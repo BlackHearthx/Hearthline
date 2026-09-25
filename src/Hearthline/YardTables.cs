@@ -19,12 +19,12 @@ namespace BlackHearthx.Hearthline
 		/// Readable label for cubs without Tameable. Prefers known prefab display names so
 		/// spawn/debug labels like enemy_boarpiggy / $enemy_boarpiggy do not show raw.
 		/// </summary>
-		public static string PrettyCreatureName(string prefabOrObjectName, string mName)
+		public static string PrettyCreatureName(string prefabOrObjectName, string mName, string language = GameText.English)
 		{
 			string prefab = StripClone(prefabOrObjectName);
 			if (PrefabDisplayNames.TryGetValue(prefab, out string pretty))
 			{
-				return pretty;
+				return GameText.Line(pretty, language);
 			}
 
 			string key = mName ?? string.Empty;
@@ -35,7 +35,7 @@ namespace BlackHearthx.Hearthline
 
 			if (key.StartsWith("enemy_", StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(key))
 			{
-				return HumanizePrefab(prefab);
+				return HumanizePrefab(prefab, language);
 			}
 
 			return key;
@@ -43,23 +43,23 @@ namespace BlackHearthx.Hearthline
 
 		private static readonly Dictionary<string, string> PrefabDisplayNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
 		{
-			{ "Boar_piggy", "Boar piggy" },
-			{ "Wolf_cub", "Wolf cub" },
-			{ "Lox_Calf", "Lox calf" },
-			{ "Moose_calf", "Moose calf" },
-			{ "Asksvin_hatchling", "Asksvin hatchling" },
-			{ "Chicken", "Chicken" },
-			{ "Boar", "Boar" },
-			{ "Wolf", "Wolf" },
-			{ "Lox", "Lox" },
-			{ "Hen", "Hen" },
+			{ "Boar_piggy", "boar_piggy" },
+			{ "Wolf_cub", "wolf_cub" },
+			{ "Lox_Calf", "lox_calf" },
+			{ "Moose_calf", "moose_calf" },
+			{ "Asksvin_hatchling", "asksvin_hatchling" },
+			{ "Chicken", "chicken" },
+			{ "Boar", "boar" },
+			{ "Wolf", "wolf" },
+			{ "Lox", "lox" },
+			{ "Hen", "hen" },
 		};
 
-		private static string HumanizePrefab(string prefab)
+		private static string HumanizePrefab(string prefab, string language)
 		{
 			if (string.IsNullOrEmpty(prefab))
 			{
-				return "Young";
+				return GameText.Line("young", language);
 			}
 
 			return prefab.Replace('_', ' ');

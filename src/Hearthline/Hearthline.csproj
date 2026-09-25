@@ -4,7 +4,7 @@
     <AssemblyName>BlackHearthx.Hearthline</AssemblyName>
     <RootNamespace>BlackHearthx.Hearthline</RootNamespace>
     <Description>Chance for tamed offspring to be born one star above the parent.</Description>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -37,6 +37,10 @@
     </Reference>
     <Reference Include="assembly_utils">
       <HintPath>$(ManagedPath)\assembly_utils.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_guiutils">
+      <HintPath>$(ManagedPath)\assembly_guiutils.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine">

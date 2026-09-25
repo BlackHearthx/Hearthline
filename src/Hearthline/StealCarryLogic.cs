@@ -83,24 +83,24 @@ namespace BlackHearthx.Hearthline
 			return Outcome.OkCarry;
 		}
 
-		public static string PlayerMessage(Outcome outcome, bool isYoung = true)
+		public static string PlayerMessage(Outcome outcome, bool isYoung = true, string language = GameText.English)
 		{
 			switch (outcome)
 			{
 				case Outcome.OkStolenCarry:
-					return "You took the young";
+					return GameText.Line("took_young", language);
 				case Outcome.OkCarry:
-					return isYoung ? "Carrying young" : "Carrying";
+					return GameText.Line(isYoung ? "carrying_young" : "carrying", language);
 				case Outcome.RefuseClaimDisabled:
-					return "Cannot steal this";
+					return GameText.Line("cannot_steal", language);
 				case Outcome.RefuseTameFailed:
-					return "Steal failed — not owner yet";
+					return GameText.Line("steal_failed", language);
 				case Outcome.RefuseWildAdult:
-					return "Only tamed adults";
+					return GameText.Line("only_tamed", language);
 				case Outcome.RefuseStealCooldown:
-					return "Steal cooldown";
+					return GameText.Line("steal_cooldown", language);
 				case Outcome.RefuseStealStamina:
-					return "Too tired to steal";
+					return GameText.Line("too_tired", language);
 				default:
 					return string.Empty;
 			}

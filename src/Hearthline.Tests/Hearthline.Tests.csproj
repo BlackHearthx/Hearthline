@@ -11,6 +11,7 @@
     <Compile Include="..\Hearthline\AwayBreed.cs" Link="AwayBreed.cs" />
     <Compile Include="..\Hearthline\WildHerd.cs" Link="WildHerd.cs" />
     <Compile Include="..\Hearthline\YardTables.cs" Link="YardTables.cs" />
+    <Compile Include="..\Hearthline\GameText.cs" Link="GameText.cs" />
     <Compile Include="..\Hearthline\YardBreeding.cs" Link="YardBreeding.cs" />
     <Compile Include="..\Hearthline\StealCarryLogic.cs" Link="StealCarryLogic.cs" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />

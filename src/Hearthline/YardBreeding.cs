@@ -60,16 +60,16 @@ namespace BlackHearthx.Hearthline
 			return true;
 		}
 
-		public static string OverCapHoverLine(bool overCap)
+		public static string OverCapHoverLine(bool overCap, string language = GameText.English)
 		{
-			return overCap ? "Pen full — no breeding" : string.Empty;
+			return overCap ? GameText.Line("pen_full", language) : string.Empty;
 		}
 
 		/// <summary>
 		/// Pregnancy countdown from ZDO start ticks + Procreation.m_pregnancyDuration (ZNet clock).
 		/// No percent — that is what lying "Show Pregnancy" UIs invent.
 		/// </summary>
-		public static string ExpectingHoverLine(long pregnantTicks, float pregnancyDurationSeconds, DateTime now)
+		public static string ExpectingHoverLine(long pregnantTicks, float pregnancyDurationSeconds, DateTime now, string language = GameText.English)
 		{
 			if (pregnantTicks <= 0L)
 			{
@@ -78,16 +78,16 @@ namespace BlackHearthx.Hearthline
 
 			if (pregnancyDurationSeconds <= 0f)
 			{
-				return "Expecting";
+				return GameText.Line("expecting", language);
 			}
 
 			double left = pregnancyDurationSeconds - (now - new DateTime(pregnantTicks)).TotalSeconds;
 			if (left <= 0.5)
 			{
-				return "Expecting — any moment";
+				return GameText.Line("expecting_soon", language);
 			}
 
-			return "Expecting — due in " + FormatDuration(left);
+			return string.Format(GameText.Line("expecting_due", language), FormatDuration(left));
 		}
 
 		public static string FormatDuration(double seconds)

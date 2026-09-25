@@ -100,7 +100,7 @@ namespace BlackHearthx.Hearthline
 			}
 
 			_nextToggle = Time.unscaledTime + 0.45f;
-			ReleaseAt(DropPoint(player), force: false, message: "Released");
+			ReleaseAt(DropPoint(player), force: false, message: Lines.T("released"));
 			return true;
 		}
 
@@ -112,7 +112,7 @@ namespace BlackHearthx.Hearthline
 				return;
 			}
 
-			ReleaseAt(DropPoint(player), force: false, message: "Dropped — hit!");
+			ReleaseAt(DropPoint(player), force: false, message: Lines.T("dropped"));
 		}
 
 		internal static bool IsYoung(Character character)
@@ -311,7 +311,7 @@ namespace BlackHearthx.Hearthline
 				stealOnCooldown: stealOnCooldown,
 				hasStealStamina: hasStealStamina);
 
-			string message = StealCarryLogic.PlayerMessage(outcome, isYoung);
+			string message = StealCarryLogic.PlayerMessage(outcome, isYoung, Lines.Language());
 			if (!string.IsNullOrEmpty(message)
 			    && (outcome == StealCarryLogic.Outcome.RefuseClaimDisabled
 			        || outcome == StealCarryLogic.Outcome.RefuseTameFailed
@@ -369,7 +369,7 @@ namespace BlackHearthx.Hearthline
 			Attach(player, target);
 			MarkCarried(nview, carried: true);
 
-			string hud = StealCarryLogic.PlayerMessage(outcome, isYoung);
+			string hud = StealCarryLogic.PlayerMessage(outcome, isYoung, Lines.Language());
 			((Character)player).Message(MessageHud.MessageType.Center, hud);
 
 			if (Plugin.DebugLogging.Value)

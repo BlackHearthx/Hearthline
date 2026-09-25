@@ -55,7 +55,7 @@ namespace BlackHearthx.Hearthline.Patches
 			string hint = CubCarry.CarryHotkeyHint;
 			if (CubCarry.IsCarrying)
 			{
-				__result += $"\n{hint} Put down";
+				__result += "\n" + hint + " " + Lines.T("put_down");
 				return;
 			}
 
@@ -69,20 +69,21 @@ namespace BlackHearthx.Hearthline.Patches
 			{
 				if (!character.IsTamed() && Plugin.ClaimWildYoung.Value)
 				{
-					__result += $"\n{hint} Steal & carry";
+					__result += "\n" + hint + " " + Lines.T("steal_carry");
 				}
 				else if (character.IsTamed())
 				{
-					__result += $"\n{hint} Carry";
+					__result += "\n" + hint + " " + Lines.T("carry");
 				}
 
 				return;
 			}
 
+			string carryLine = hint + " " + Lines.T("carry");
 			if (CubCarry.IsTamedAdult(character)
-			    && __result.IndexOf("Carry", System.StringComparison.Ordinal) < 0)
+			    && __result.IndexOf(carryLine, System.StringComparison.Ordinal) < 0)
 			{
-				__result += $"\n{hint} Carry";
+				__result += "\n" + carryLine;
 			}
 		}
 	}
@@ -102,31 +103,41 @@ namespace BlackHearthx.Hearthline.Patches
 			{
 				string name = YardTables.PrettyCreatureName(
 					__instance.gameObject.name,
-					__instance.m_name);
-				string wild = __instance.IsTamed() ? "tame" : "wild";
-				__result = $"{name} ( {wild} )";
+					__instance.m_name,
+					Lines.Language());
+				string wild = __instance.IsTamed()
+					? Lines.Vanilla("$hud_tame", "tame")
+					: Lines.Vanilla("$hud_wild", "wild");
+				__result = name + " ( " + wild + " )";
 			}
 
 			string hint = CubCarry.CarryHotkeyHint;
 			if (CubCarry.IsCarrying)
 			{
-				if (__result.IndexOf("Put down", System.StringComparison.Ordinal) < 0)
+				string down = hint + " " + Lines.T("put_down");
+				if (__result.IndexOf(down, System.StringComparison.Ordinal) < 0)
 				{
-					__result += $"\n{hint} Put down";
+					__result += "\n" + down;
 				}
 
 				return;
 			}
 
-			if (!__instance.IsTamed() && Plugin.ClaimWildYoung.Value
-			    && __result.IndexOf("Steal", System.StringComparison.Ordinal) < 0)
+			if (!__instance.IsTamed() && Plugin.ClaimWildYoung.Value)
 			{
-				__result += $"\n{hint} Steal & carry";
+				string steal = hint + " " + Lines.T("steal_carry");
+				if (__result.IndexOf(steal, System.StringComparison.Ordinal) < 0)
+				{
+					__result += "\n" + steal;
+				}
 			}
-			else if (__instance.IsTamed() && Plugin.EnableCubCarry.Value
-			         && __result.IndexOf("Carry", System.StringComparison.Ordinal) < 0)
+			else if (__instance.IsTamed() && Plugin.EnableCubCarry.Value)
 			{
-				__result += $"\n{hint} Carry";
+				string carry = hint + " " + Lines.T("carry");
+				if (__result.IndexOf(carry, System.StringComparison.Ordinal) < 0)
+				{
+					__result += "\n" + carry;
+				}
 			}
 		}
 	}
