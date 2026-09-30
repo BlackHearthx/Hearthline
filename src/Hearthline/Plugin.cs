@@ -13,7 +13,7 @@ namespace BlackHearthx.Hearthline
 	{
 		public const string PluginGuid = "blackhearthx.hearthline";
 		public const string PluginName = "Hearthline";
-		public const string PluginVersion = "1.0.5";
+		public const string PluginVersion = "1.0.6";
 
 		internal const string CllcGuid = "org.bepinex.plugins.creaturelevelcontrol";
 
@@ -45,7 +45,6 @@ namespace BlackHearthx.Hearthline
 		internal static ConfigEntry<bool> ShowYardHover;
 		internal static ConfigEntry<bool> EnableMateDraw;
 		internal static ConfigEntry<float> MateDrawRange;
-		internal static ConfigEntry<float> MateDrawSpeed;
 		internal static ConfigEntry<float> MateDrawInterval;
 		internal static ConfigEntry<float> MateDrawPlayerRange;
 		internal static ConfigEntry<bool> ClaimWildYoung;
@@ -152,7 +151,7 @@ namespace BlackHearthx.Hearthline
 				"9. Mate draw",
 				"Enable Mate Draw",
 				true,
-				"Softly nudge fed, calm, tamed adults toward a same-species partner so Bond ticks sooner. Stops when close, hungry, alert, pregnant, or pen is full.");
+				"Fed, calm, tamed adults walk over to a same-species partner and stay beside it until one is expecting. Skipped while following you, hungry, alert, or when the pen is full.");
 			MateDrawRange = SyncedConfig(
 				"9. Mate draw",
 				"Mate Draw Range",
@@ -160,26 +159,19 @@ namespace BlackHearthx.Hearthline
 				new ConfigDescription(
 					"How far a tamed adult looks for a partner to walk toward.",
 					new AcceptableValueRange<float>(3f, 30f)));
-			MateDrawSpeed = SyncedConfig(
-				"9. Mate draw",
-				"Mate Draw Speed",
-				1.4f,
-				new ConfigDescription(
-					"Walk speed (m/s) while being drawn to a mate.",
-					new AcceptableValueRange<float>(0.2f, 4f)));
 			MateDrawInterval = SyncedConfig(
 				"9. Mate draw",
 				"Mate Draw Interval",
 				0.5f,
 				new ConfigDescription(
-					"Seconds between mate-draw scans.",
+					"Seconds between partner checks.",
 					new AcceptableValueRange<float>(0.2f, 3f)));
 			MateDrawPlayerRange = SyncedConfig(
 				"9. Mate draw",
 				"Mate Draw Player Range",
 				40f,
 				new ConfigDescription(
-					"Only animals within this distance of the local player are nudged (keeps distant pens quiet).",
+					"Only animals within this distance of you look for a partner (keeps distant pens quiet).",
 					new AcceptableValueRange<float>(10f, 80f)));
 			TameWhileAway = SyncedConfig(
 				"6. Taming",
@@ -251,6 +243,7 @@ namespace BlackHearthx.Hearthline
 			_harmony.PatchAll(typeof(Patches.TameableConsumedPatch));
 			_harmony.PatchAll(typeof(Patches.AwayTamePatch));
 			_harmony.PatchAll(typeof(Patches.AwayBreedPatch));
+			_harmony.PatchAll(typeof(Patches.MateDrawIdlePatch));
 			_harmony.PatchAll(typeof(Patches.CharacterHoverPatch));
 			_harmony.PatchAll(typeof(Patches.PlayerFindHoverYoungPatch));
 			_harmony.PatchAll(typeof(Patches.TameableStealHoverPatch));
@@ -268,7 +261,6 @@ namespace BlackHearthx.Hearthline
 		private void Update()
 		{
 			CubCarry.Tick();
-			MateDraw.Tick();
 		}
 
 		private void OnDestroy()

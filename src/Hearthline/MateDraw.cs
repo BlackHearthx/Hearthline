@@ -1,46 +1,139 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using HarmonyLib;
 using UnityEngine;
 
 namespace BlackHearthx.Hearthline
 {
 	/// <summary>
-	/// Soft nudge: fed, calm, tamed adults walk toward a same-species partner
-	/// so Bond ticks happen sooner. Yields when already in partner range or pen is full.
-	/// Only moves ZDO owners. Inspired by farm QoL (mate draw), not a portal system.
+	/// Fed, calm, tamed adults walk to a same-species partner with their own AI
+	/// (pathing + animation) and stay beside it, so Procreate ticks keep finding
+	/// the partner instead of the idle wander pulling the pair apart.
+	/// Runs in place of BaseAI.IdleMovement only; followers, fleeing, eating and
+	/// combat never reach it.
 	/// </summary>
 	internal static class MateDraw
 	{
-		private static readonly List<Character> Buffer = new List<Character>();
-		private static float _nextScan;
-
-		internal static void Tick()
+		private sealed class Plan
 		{
-			if (!Plugin.EnableMod.Value || !Plugin.EnableMateDraw.Value)
+			public float NextThink;
+			public Character Partner;
+			public float StopAt;
+			public bool Eligible;
+			public bool Staying;
+		}
+
+		private static readonly ConditionalWeakTable<BaseAI, Plan> Plans = new ConditionalWeakTable<BaseAI, Plan>();
+
+		private static readonly Func<BaseAI, float, Vector3, float, bool, bool> MoveTo =
+			AccessTools.MethodDelegate<Func<BaseAI, float, Vector3, float, bool, bool>>(
+				AccessTools.Method(typeof(BaseAI), "MoveTo", new[] { typeof(float), typeof(Vector3), typeof(float), typeof(bool) }));
+
+		/// <summary>True when mate draw moved (or held) the animal this frame.</summary>
+		internal static bool Steer(BaseAI ai, float dt)
+		{
+			if (!Plugin.EnableMod.Value || !Plugin.EnableMateDraw.Value || ai == null || MoveTo == null)
+			{
+				return false;
+			}
+
+			Character self = ((Component)ai).GetComponent<Character>();
+			if (self == null || !self.IsTamed())
+			{
+				return false;
+			}
+
+			Plan plan = Plans.GetOrCreateValue(ai);
+			if (Time.time >= plan.NextThink)
+			{
+				plan.NextThink = Time.time + Plugin.MateDrawInterval.Value;
+				Think(ai, self, plan);
+			}
+
+			if (!plan.Eligible || plan.Partner == null || plan.Partner.IsDead())
+			{
+				plan.Staying = false;
+				return false;
+			}
+
+			Vector3 partnerPos = plan.Partner.transform.position;
+			float distance = Utils.DistanceXZ(self.transform.position, partnerPos);
+			YardBreeding.MateMove move = YardBreeding.MateDrawMove(true, true, distance, plan.StopAt, plan.Staying);
+			if (move == YardBreeding.MateMove.Stay)
+			{
+				plan.Staying = true;
+				ai.StopMoving();
+				return true;
+			}
+
+			plan.Staying = false;
+			MoveTo(ai, dt, partnerPos, plan.StopAt, false);
+			return true;
+		}
+
+		private static void Think(BaseAI ai, Character self, Plan plan)
+		{
+			plan.Eligible = false;
+			plan.Partner = null;
+
+			if (CubCarry.IsYoung(self) || self == CubCarry.Carried)
 			{
 				return;
 			}
-
-			if (Time.unscaledTime < _nextScan)
-			{
-				return;
-			}
-
-			_nextScan = Time.unscaledTime + Plugin.MateDrawInterval.Value;
 
 			Player local = Player.m_localPlayer;
-			if (local == null || ((Character)local).IsDead())
+			if (local == null
+			    || Utils.DistanceXZ(local.transform.position, self.transform.position) > Plugin.MateDrawPlayerRange.Value)
 			{
 				return;
 			}
 
-			float playerRange = Plugin.MateDrawPlayerRange.Value;
-			Buffer.Clear();
-			Character.GetCharactersInRange(local.transform.position, playerRange, Buffer);
-
-			float dt = Plugin.MateDrawInterval.Value;
-			foreach (Character character in Buffer)
+			Procreation procreation = ((Component)self).GetComponent<Procreation>();
+			if (procreation == null || procreation.m_offspring == null)
 			{
-				TryNudge(character, dt);
+				return;
+			}
+
+			ZNetView nview = ((Component)self).GetComponent<ZNetView>();
+			if (nview == null || !nview.IsValid() || !nview.IsOwner())
+			{
+				return;
+			}
+
+			Tameable tameable = ((Component)self).GetComponent<Tameable>();
+			bool pregnant = nview.GetZDO().GetLong(ZDOVars.s_pregnant, 0L) != 0L;
+			bool hungry = tameable != null && tameable.IsHungry();
+			bool overCap = IsOverCap(self, procreation);
+
+			float partnerRange = procreation.m_partnerCheckRange > 0f ? procreation.m_partnerCheckRange : 3f;
+			float drawRange = Mathf.Max(Plugin.MateDrawRange.Value, partnerRange + 1f);
+			Character partner = FindPartner(self, procreation, drawRange);
+
+			bool eligible = YardBreeding.MayMateDraw(
+				enabled: true,
+				isTamed: true,
+				isYoung: false,
+				isPregnant: pregnant,
+				isHungry: hungry,
+				isAlerted: ai.IsAlerted(),
+				overCap: overCap,
+				hasPartnerInDrawRange: partner != null,
+				partnerAlreadyClose: false);
+			if (!eligible)
+			{
+				return;
+			}
+
+			plan.Eligible = true;
+			plan.Partner = partner;
+			plan.StopAt = YardBreeding.MateStopDistance(partnerRange, self.GetRadius(), partner.GetRadius());
+
+			if (Plugin.DebugLogging.Value && !plan.Staying)
+			{
+				Plugin.Log.LogInfo(
+					$"[Hearthline] mate draw {YardTables.StripClone(self.gameObject.name)} -> {YardTables.StripClone(partner.gameObject.name)} " +
+					$"dist={Utils.DistanceXZ(self.transform.position, partner.transform.position):0.#} stopAt={plan.StopAt:0.#} partnerRange={partnerRange:0.#}");
 			}
 		}
 
@@ -89,84 +182,6 @@ namespace BlackHearthx.Hearthline
 			return YardBreeding.IsOverCap(count, procreation.m_maxCreatures);
 		}
 
-		private static void TryNudge(Character character, float dt)
-		{
-			if (character == null || character.IsPlayer() || !character.IsTamed())
-			{
-				return;
-			}
-
-			if (CubCarry.IsYoung(character) || character == CubCarry.Carried)
-			{
-				return;
-			}
-
-			Procreation procreation = ((Component)character).GetComponent<Procreation>();
-			if (procreation == null || procreation.m_offspring == null)
-			{
-				return;
-			}
-
-			ZNetView nview = ((Component)character).GetComponent<ZNetView>();
-			if (nview == null || !nview.IsValid() || !nview.IsOwner())
-			{
-				return;
-			}
-
-			long pregnant = nview.GetZDO().GetLong(ZDOVars.s_pregnant, 0L);
-			Tameable tameable = ((Component)character).GetComponent<Tameable>();
-			BaseAI ai = ((Component)character).GetComponent<BaseAI>();
-			bool hungry = tameable != null && tameable.IsHungry();
-			bool alerted = ai != null && ai.IsAlerted();
-			bool overCap = IsOverCap(character, procreation);
-
-			float partnerRange = procreation.m_partnerCheckRange > 0f ? procreation.m_partnerCheckRange : 3f;
-			float drawRange = Mathf.Max(Plugin.MateDrawRange.Value, partnerRange + 1f);
-			float stopAt = Mathf.Max(0.75f, partnerRange * 0.85f);
-
-			Character partner = FindPartner(character, procreation, drawRange);
-			bool hasPartner = partner != null;
-			bool alreadyClose = hasPartner
-				&& Vector3.Distance(character.transform.position, partner.transform.position) <= stopAt;
-
-			if (!YardBreeding.MayMateDraw(
-				    enabled: true,
-				    isTamed: true,
-				    isYoung: false,
-				    isPregnant: pregnant != 0L,
-				    isHungry: hungry,
-				    isAlerted: alerted,
-				    overCap: overCap,
-				    hasPartnerInDrawRange: hasPartner,
-				    partnerAlreadyClose: alreadyClose))
-			{
-				return;
-			}
-
-			Vector3 to = partner.transform.position - character.transform.position;
-			to.y = 0f;
-			float dist = to.magnitude;
-			if (dist < 0.05f)
-			{
-				return;
-			}
-
-			float step = Mathf.Min(Plugin.MateDrawSpeed.Value * dt, dist - stopAt);
-			if (step <= 0f)
-			{
-				return;
-			}
-
-			Vector3 next = character.transform.position + to.normalized * step;
-			character.transform.position = next;
-
-			if (Plugin.DebugLogging.Value)
-			{
-				Plugin.Log.LogInfo(
-					$"[Hearthline] mate draw {YardTables.StripClone(character.gameObject.name)} -> {YardTables.StripClone(partner.gameObject.name)} step={step:0.##}");
-			}
-		}
-
 		private static Character FindPartner(Character self, Procreation procreation, float range)
 		{
 			string selfPrefab = YardTables.StripClone(self.gameObject.name);
@@ -179,12 +194,12 @@ namespace BlackHearthx.Hearthline
 			float bestDist = float.MaxValue;
 			foreach (Character other in nearby)
 			{
-				if (other == null || other == self || other.IsPlayer() || !other.IsTamed())
+				if (other == null || other == self || other.IsPlayer() || !other.IsTamed() || other.IsDead())
 				{
 					continue;
 				}
 
-				if (CubCarry.IsYoung(other))
+				if (CubCarry.IsYoung(other) || other == CubCarry.Carried)
 				{
 					continue;
 				}
@@ -196,8 +211,8 @@ namespace BlackHearthx.Hearthline
 				}
 
 				string otherPrefab = YardTables.StripClone(other.gameObject.name);
-				if (!string.Equals(otherPrefab, selfPrefab, System.StringComparison.OrdinalIgnoreCase)
-				    && !string.Equals(Utils.GetPrefabName(otherProc.m_offspring), offspring, System.StringComparison.OrdinalIgnoreCase))
+				if (!string.Equals(otherPrefab, selfPrefab, StringComparison.OrdinalIgnoreCase)
+				    && !string.Equals(Utils.GetPrefabName(otherProc.m_offspring), offspring, StringComparison.OrdinalIgnoreCase))
 				{
 					continue;
 				}

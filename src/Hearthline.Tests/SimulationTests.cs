@@ -251,6 +251,25 @@ public class SimulationTests
 	}
 
 	[Fact]
+	public void Sim_MateDraw_WalksThenStaysBesidePartner()
+	{
+		Assert.Equal(YardBreeding.MateMove.Walk, YardBreeding.MateDrawMove(true, true, 8f, 2f, wasStaying: false));
+		Assert.Equal(YardBreeding.MateMove.Stay, YardBreeding.MateDrawMove(true, true, 1.9f, 2f, wasStaying: false));
+		Assert.Equal(YardBreeding.MateMove.Stay, YardBreeding.MateDrawMove(true, true, 2.5f, 2f, wasStaying: true));
+		Assert.Equal(YardBreeding.MateMove.Walk, YardBreeding.MateDrawMove(true, true, 3f, 2f, wasStaying: true));
+		Assert.Equal(YardBreeding.MateMove.None, YardBreeding.MateDrawMove(false, true, 8f, 2f, wasStaying: true));
+		Assert.Equal(YardBreeding.MateMove.None, YardBreeding.MateDrawMove(true, false, 8f, 2f, wasStaying: false));
+	}
+
+	[Fact]
+	public void Sim_MateStop_BigBodiesStopAtContact()
+	{
+		Assert.Equal(2.1f, YardBreeding.MateStopDistance(3f, 0.4f, 0.4f), 3);
+		Assert.Equal(3.85f, YardBreeding.MateStopDistance(4f, 1.8f, 1.8f), 3);
+		Assert.Equal(2.1f, YardBreeding.MateStopDistance(0f, 0.3f, 0.3f), 3);
+	}
+
+	[Fact]
 	public void Sim_CapCounts_AdultAndPiggy()
 	{
 		Assert.True(YardBreeding.CountsTowardCap("Boar", "Boar_piggy", "Boar"));

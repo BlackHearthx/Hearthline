@@ -60,6 +60,40 @@ namespace BlackHearthx.Hearthline
 			return true;
 		}
 
+		public enum MateMove
+		{
+			None,
+			Walk,
+			Stay
+		}
+
+		/// <summary>
+		/// Walk toward the partner until inside stopAt, then stay beside it so the
+		/// next Procreate tick still finds it. holdSlack keeps a settled pair from jittering.
+		/// </summary>
+		public static MateMove MateDrawMove(bool eligible, bool hasPartner, float distance, float stopAt, bool wasStaying, float holdSlack = 0.75f)
+		{
+			if (!eligible || !hasPartner)
+			{
+				return MateMove.None;
+			}
+
+			float limit = wasStaying ? stopAt + holdSlack : stopAt;
+			return distance <= limit ? MateMove.Stay : MateMove.Walk;
+		}
+
+		/// <summary>
+		/// Vanilla counts a partner by center distance (m_partnerCheckRange). Big bodies
+		/// like the lox cannot overlap, so stop just outside contact instead of shoving.
+		/// </summary>
+		public static float MateStopDistance(float partnerCheckRange, float selfRadius, float otherRadius)
+		{
+			float range = partnerCheckRange > 0f ? partnerCheckRange : 3f;
+			float contact = Math.Max(0f, selfRadius) + Math.Max(0f, otherRadius) + 0.25f;
+			float comfy = Math.Max(0.75f, range * 0.7f);
+			return Math.Max(comfy, contact);
+		}
+
 		public static string OverCapHoverLine(bool overCap, string language = GameText.English)
 		{
 			return overCap ? GameText.Line("pen_full", language) : string.Empty;

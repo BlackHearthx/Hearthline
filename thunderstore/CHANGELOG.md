@@ -1,3 +1,6 @@
+## 1.0.6
+- Tamed adults walk over to their partner and stay beside it, so lox and other big animals actually get to breed.
+
 ## 1.0.5
 - Yard and carry lines follow the language you picked in Valheim.
 

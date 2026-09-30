@@ -20,7 +20,7 @@ By **BlackHearthx**.
 | **Favorite meals** | Right food → much higher star chance while still fed |
 | **Steal and carry** | **Z** grabs wild young (or carries your tamed animals) |
 | **Yard hover** | Bond, expecting timer, pen full, cub growth — at a glance |
-| **Mate draw** | Fed, calm adults walk toward a partner so breeding starts sooner |
+| **Mate draw** | Fed, calm adults walk to a partner and stay close so breeding starts sooner |
 | **While you are away** | Tamed pens keep breeding up to the cap. Wild herds do not catch up |
 | **Wild herds** | Wild adults can breed while that area is loaded; cubs stay wild |
 
@@ -82,7 +82,7 @@ Hover livestock to see:
 - **Growing** — cub maturity  
 - Favorite tip when it applies  
 
-**Mate draw:** fed, calm tamed adults gently walk toward a same-species partner (stops if hungry, alert, pregnant, young, or the pen is full).
+**Mate draw:** fed, calm tamed adults walk over to a same-species partner and stay beside it until one is expecting (not while following you, hungry, alert, or when the pen is full).
 
 ### 5. Wild herds
 
@@ -104,7 +104,7 @@ Wild adults with offspring can breed while that area is loaded; babies stay wild
 | **Favoritas** | Javali cenoura · Lobo carne crua · Lox/galinha cevada · Asksvin vinhaberry · Alce lingonberry |
 | **Z** | Rouba filhote selvagem ou carrega cria / adulto **domado**. No corpo, **E** acaricia. Na sela, **E** monta |
 | **Hover** | Vínculo, gravidez com contagem, curral cheio, crescimento |
-| **Mate draw** | Adultos calmos e alimentados andam até o parceiro |
+| **Mate draw** | Adultos calmos e alimentados vão até o parceiro e ficam juntos |
 | **Manadas** | Selvagens podem procriar; filhote nasce selvagem |
 
 Teto **2★** (acima disso precisa CLLC). Não use com BreedingUpgrades ou Procreation Plus.
