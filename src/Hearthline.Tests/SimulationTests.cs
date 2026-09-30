@@ -262,6 +262,15 @@ public class SimulationTests
 	}
 
 	[Fact]
+	public void Sim_MateDraw_RestsInsteadOfStayingPinned()
+	{
+		Assert.False(YardBreeding.MateDrawShouldRest(staying: true, stayedSeconds: 60f, secondsWithoutProgress: 999f));
+		Assert.True(YardBreeding.MateDrawShouldRest(staying: true, stayedSeconds: YardBreeding.MateStayLimitSeconds, secondsWithoutProgress: 0f));
+		Assert.False(YardBreeding.MateDrawShouldRest(staying: false, stayedSeconds: 999f, secondsWithoutProgress: 5f));
+		Assert.True(YardBreeding.MateDrawShouldRest(staying: false, stayedSeconds: 0f, secondsWithoutProgress: YardBreeding.MateStuckLimitSeconds));
+	}
+
+	[Fact]
 	public void Sim_MateStop_BigBodiesStopAtContact()
 	{
 		Assert.Equal(2.1f, YardBreeding.MateStopDistance(3f, 0.4f, 0.4f), 3);

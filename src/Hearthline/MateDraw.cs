@@ -22,6 +22,10 @@ namespace BlackHearthx.Hearthline
 			public float StopAt;
 			public bool Eligible;
 			public bool Staying;
+			public float StayStart;
+			public float BestDistance = float.MaxValue;
+			public float LastProgress;
+			public float RestUntil;
 		}
 
 		private static readonly ConditionalWeakTable<BaseAI, Plan> Plans = new ConditionalWeakTable<BaseAI, Plan>();
@@ -45,15 +49,21 @@ namespace BlackHearthx.Hearthline
 			}
 
 			Plan plan = Plans.GetOrCreateValue(ai);
-			if (Time.time >= plan.NextThink)
+			float now = Time.time;
+			if (now < plan.RestUntil)
 			{
-				plan.NextThink = Time.time + Plugin.MateDrawInterval.Value;
+				return false;
+			}
+
+			if (now >= plan.NextThink)
+			{
+				plan.NextThink = now + Plugin.MateDrawInterval.Value;
 				Think(ai, self, plan);
 			}
 
 			if (!plan.Eligible || plan.Partner == null || plan.Partner.IsDead())
 			{
-				plan.Staying = false;
+				Reset(plan);
 				return false;
 			}
 
@@ -62,14 +72,54 @@ namespace BlackHearthx.Hearthline
 			YardBreeding.MateMove move = YardBreeding.MateDrawMove(true, true, distance, plan.StopAt, plan.Staying);
 			if (move == YardBreeding.MateMove.Stay)
 			{
-				plan.Staying = true;
+				if (!plan.Staying)
+				{
+					plan.Staying = true;
+					plan.StayStart = now;
+				}
+			}
+			else
+			{
+				if (plan.Staying || plan.BestDistance == float.MaxValue)
+				{
+					plan.Staying = false;
+					plan.BestDistance = distance;
+					plan.LastProgress = now;
+				}
+				else if (distance < plan.BestDistance - 0.5f)
+				{
+					plan.BestDistance = distance;
+					plan.LastProgress = now;
+				}
+			}
+
+			if (YardBreeding.MateDrawShouldRest(plan.Staying, now - plan.StayStart, now - plan.LastProgress))
+			{
+				if (Plugin.DebugLogging.Value)
+				{
+					Plugin.Log.LogInfo(
+						$"[Hearthline] mate draw rest {YardTables.StripClone(self.gameObject.name)} ({(plan.Staying ? "stood long enough" : "cannot reach partner")})");
+				}
+
+				Reset(plan);
+				plan.RestUntil = now + YardBreeding.MateRestSeconds;
+				return false;
+			}
+
+			if (plan.Staying)
+			{
 				ai.StopMoving();
 				return true;
 			}
 
-			plan.Staying = false;
 			MoveTo(ai, dt, partnerPos, plan.StopAt, false);
 			return true;
+		}
+
+		private static void Reset(Plan plan)
+		{
+			plan.Staying = false;
+			plan.BestDistance = float.MaxValue;
 		}
 
 		private static void Think(BaseAI ai, Character self, Plan plan)

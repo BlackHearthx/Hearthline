@@ -1,3 +1,6 @@
+## 1.0.7
+- Pairs no longer stay pinned together: after a while, or if a fence blocks the way, they wander free for a bit so they can still find food. Hunger always wins.
+
 ## 1.0.6
 - Tamed adults walk over to their partner and stay beside it, so lox and other big animals actually get to breed.
 

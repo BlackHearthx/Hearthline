@@ -82,6 +82,22 @@ namespace BlackHearthx.Hearthline
 			return distance <= limit ? MateMove.Stay : MateMove.Walk;
 		}
 
+		public const float MateStayLimitSeconds = 180f;
+		public const float MateStuckLimitSeconds = 15f;
+		public const float MateRestSeconds = 60f;
+
+		/// <summary>
+		/// A pair that stood together too long, or a walker that stopped getting closer
+		/// (fence, cliff, no path), goes back to free wandering for a while so it can
+		/// still roam into food and never stays pinned.
+		/// </summary>
+		public static bool MateDrawShouldRest(bool staying, float stayedSeconds, float secondsWithoutProgress)
+		{
+			return staying
+				? stayedSeconds >= MateStayLimitSeconds
+				: secondsWithoutProgress >= MateStuckLimitSeconds;
+		}
+
 		/// <summary>
 		/// Vanilla counts a partner by center distance (m_partnerCheckRange). Big bodies
 		/// like the lox cannot overlap, so stop just outside contact instead of shoving.
