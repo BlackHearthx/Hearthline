@@ -53,6 +53,9 @@ namespace BlackHearthx.Hearthline
 			{ "Wolf", "wolf" },
 			{ "Lox", "lox" },
 			{ "Hen", "hen" },
+            { "Hare", "hare" },
+            { "Hearthline_HareKit", "hare_kit" },
+            { "nick008_HareKit", "hare_kit" },
 		};
 
 		private static string HumanizePrefab(string prefab, string language)

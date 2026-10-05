@@ -22,6 +22,7 @@ By **BlackHearthx**.
 | **Yard hover** | Bond, expecting timer, pen full, cub growth — at a glance |
 | **Mate draw** | Fed, calm adults walk to a partner and stay close so breeding starts sooner |
 | **While you are away** | Tamed pens keep breeding up to the cap. Wild herds do not catch up |
+| **Hare livestock** | Tame and breed Mistlands hares, with small kits that grow |
 | **Wild herds** | Wild adults can breed while that area is loaded; cubs stay wild |
 
 Star cap is **2★**. For higher stars you need [CLLC](https://thunderstore.io/c/valheim/p/Smoothbrain/CreatureLevelAndLootControl/).
@@ -47,7 +48,7 @@ Wild adults you are taming also keep filling the tame bar while you are away, if
 
 ### 2. Feed favorites
 
-Favorites must be foods that animal **already eats** in vanilla.
+Favorites must be foods that animal **already eats**. Hearthline adds food support for hares.
 
 | Animal | Favorite (default) |
 | --- | --- |
@@ -55,6 +56,7 @@ Favorites must be foods that animal **already eats** in vanilla.
 | Wolf | Raw Meat |
 | Lox | Barley |
 | Hen | Barley |
+| Hare | Carrot |
 | Asksvin | Vineberry |
 | Moose | Lingonberry |
 
@@ -92,12 +94,25 @@ Wild adults with offspring can breed while that area is loaded; babies stay wild
 
 ---
 
+### 6. Raise hares
+
+Mistlands hares can now be tamed and bred without another mod. Feed carrots, turnips or Jotun Puffs; optional Apple items are accepted when installed. Carrot is their favorite meal.
+
+Tamed hares support Follow/Stay and Z carry. Kits can be stolen/carried and grow into adults while keeping their stars. They have no drops and are protected from the butcher knife. Wild adults flee threats.
+
+Default timings are 25 minutes to tame, 5 minutes fed per meal, 33 minutes 20 seconds to grow and 90 seconds of pregnancy. The pen holds 7 adults/kits within 10 meters. Configure hare food and timings under **10. Hares**; restart the world when enabling/disabling this feature. Server and clients need the same Hearthline version.
+
+If TameableHares is installed, it controls the adult hares and their food/timings. Hearthline supplies its normal star and yard features. Existing kits from that mod remain supported if you remove it after upgrading.
+
+---
+
 ## Como usar (PT-BR)
 
 **Hearthline** melhora o gado: filhotes mais fortes, comida favorita, roubar cria selvagem e ver o curral com clareza.
 
 | O que muda | Em jogo |
 | --- | --- |
+| **Lebres** | Domar e reproduzir lebres; filhotes crescem mantendo as estrelas. Cenoura é a favorita |
 | **Filhotes ★** | Chance de nascer com **+1★** (5% normal · **25%** com comida favorita ainda alimentado) |
 | **Cria longe** | Curral domado segue até encher. Manada selvagem não adianta quando você volta |
 | **Doma longe** | Solta a comida do adulto selvagem e sai. A barra continua. Sem comida perto, não anda |
@@ -127,3 +142,5 @@ After first launch: `BepInEx/config/blackhearthx.hearthline.cfg`
 | GUID | `blackhearthx.hearthline` |
 
 Thunderstore page README: [`thunderstore/README.md`](thunderstore/README.md) (same player guide; used by the package zip).
+
+Hare livestock inspired by nick008's TameableHares, implemented independently in Hearthline.

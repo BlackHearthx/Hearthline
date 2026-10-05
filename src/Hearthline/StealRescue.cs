@@ -85,6 +85,12 @@ namespace BlackHearthx.Hearthline
 				{
 					return true;
 				}
+
+                if (adult.gameObject.name.StartsWith("Hare", System.StringComparison.Ordinal)
+                    && (youngPrefab == HareLivestock.KitName || youngPrefab == HareLivestock.LegacyKitName))
+                {
+                    return true;
+                }
 			}
 
 			string adultPrefab = YardTables.StripClone(adult.gameObject.name);

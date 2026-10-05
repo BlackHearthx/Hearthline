@@ -13,7 +13,7 @@ namespace BlackHearthx.Hearthline
 	{
 		public const string PluginGuid = "blackhearthx.hearthline";
 		public const string PluginName = "Hearthline";
-		public const string PluginVersion = "1.0.7";
+		public const string PluginVersion = "1.1.0";
 
 		internal const string CllcGuid = "org.bepinex.plugins.creaturelevelcontrol";
 
@@ -28,6 +28,10 @@ namespace BlackHearthx.Hearthline
 		};
 
 		private Harmony _harmony;
+        internal static ConfigEntry<bool> EnableHares;
+        internal static ConfigEntry<string> HareFoods;
+        internal static ConfigEntry<float> HareTamingSeconds, HareFedSeconds, HareGrowthSeconds, HarePregnancySeconds, HarePregnancyChance;
+        internal static ConfigEntry<int> HarePenLimit;
 
 		internal static ConfigEntry<bool> LockConfig;
 		internal static ConfigEntry<bool> EnableMod;
@@ -133,7 +137,7 @@ namespace BlackHearthx.Hearthline
 			FavoriteFoods = SyncedConfig(
 				"5. Favorite meals",
 				"Favorite Foods",
-				"Boar:Carrot;Wolf:RawMeat;Lox:Barley;Hen:Barley;Asksvin:Vineberry;Moose:Lingonberry",
+				"Boar:Carrot;Wolf:RawMeat;Lox:Barley;Hen:Barley;Hare:Carrot;Asksvin:Vineberry;Moose:Lingonberry",
 				"CreaturePrefab:Item,Item;... Items must already be on that creature's vanilla consume list.");
 			FavoriteUpgradeChance = SyncedConfig(
 				"5. Favorite meals",
@@ -232,7 +236,21 @@ namespace BlackHearthx.Hearthline
 				true,
 				"Cannot swing weapons or draw a bow while carrying. Drop the animal first.");
 
-			_harmony = new Harmony(PluginGuid);
+			EnableHares = SyncedConfig("10. Hares", "Enable Hare Livestock", true, "Make vanilla hares tameable and breedable. Restart the world after changing. Existing kits remain registered when disabled.");
+            HareFoods = SyncedConfig("10. Hares", "Hare Foods", "Carrot,Turnip,MushroomJotunPuffs,Apple", "Food prefab names, comma separated. Missing optional items are ignored.");
+            HareTamingSeconds = SyncedConfig("10. Hares", "Taming Seconds", 1500f, new ConfigDescription("Time needed to tame a hare. Restart world after changing.", new AcceptableValueRange<float>(1f, 86400f)));
+            HareFedSeconds = SyncedConfig("10. Hares", "Fed Seconds", 300f, new ConfigDescription("Fed duration per meal. Restart world after changing.", new AcceptableValueRange<float>(1f, 86400f)));
+            HareGrowthSeconds = SyncedConfig("10. Hares", "Growth Seconds", 2000f, new ConfigDescription("Kit growth time. Restart world after changing.", new AcceptableValueRange<float>(1f, 86400f)));
+            HarePregnancySeconds = SyncedConfig("10. Hares", "Pregnancy Seconds", 90f, new ConfigDescription("Pregnancy duration. Restart world after changing.", new AcceptableValueRange<float>(1f, 86400f)));
+            HarePregnancyChance = SyncedConfig("10. Hares", "Pregnancy Attempt Chance", 66f, new ConfigDescription("Percent chance to advance love on each eligible attempt. Restart world after changing.", new AcceptableValueRange<float>(0f, 100f)));
+            HarePenLimit = SyncedConfig("10. Hares", "Pen Limit", 7, new ConfigDescription("Adults plus kits allowed within 10 meters. Restart world after changing.", new AcceptableValueRange<int>(2, 100)));
+            if (EnableHares.Value && !YardTables.ParseFavorites(FavoriteFoods.Value).ContainsKey("Hare"))
+                FavoriteFoods.Value = FavoriteFoods.Value.TrimEnd(';') + ";Hare:Carrot";
+            _harmony = new Harmony(PluginGuid);
+            _harmony.PatchAll(typeof(HarePrefabPatch));
+            _harmony.PatchAll(typeof(HareKitProtectionPatch));
+            _harmony.PatchAll(typeof(HareKitCountPatch));
+            _harmony.PatchAll(typeof(HareKitGrowthPatch));
 			_harmony.PatchAll(typeof(Patches.ProcreationPatch));
 			_harmony.PatchAll(typeof(Patches.FastBreedAwakePatch));
 			_harmony.PatchAll(typeof(Patches.FastBreedProcreatePatch));

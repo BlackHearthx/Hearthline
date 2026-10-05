@@ -5,6 +5,25 @@ namespace Hearthline.Tests;
 
 public class YardTablesTests
 {
+    [Theory]
+    [InlineData("Hearthline_HareKit(Clone)", "English", "Hare kit")]
+    [InlineData("nick008_HareKit(Clone)", "Portuguese_Brazilian", "Filhote de lebre")]
+    [InlineData("Hare(Clone)", "Portuguese_Brazilian", "Lebre")]
+    public void HareMigrationNamesUseLocalizedYardLabels(string prefab, string language, string expected)
+    {
+        Assert.Equal(expected, YardTables.PrettyCreatureName(prefab, "$enemy_hare", language));
+    }
+
+    [Fact]
+    public void HareFavoriteDoesNotChangeOtherSpecies()
+    {
+        var favorites = YardTables.ParseFavorites("Hen:Barley;Hare:Carrot;Boar:Carrot");
+        Assert.True(YardTables.IsListedFavorite("Hare", "Carrot", favorites));
+        Assert.False(YardTables.IsListedFavorite("Hare", "Turnip", favorites));
+        Assert.False(YardTables.IsListedFavorite("Hare", "Barley", favorites));
+        Assert.True(YardTables.IsListedFavorite("Hen", "Barley", favorites));
+    }
+
 	[Fact]
 	public void ParseChancesReadsPrefabPercents()
 	{

@@ -124,6 +124,8 @@ namespace BlackHearthx.Hearthline
 			"boar|Boar|Vildsvin|Sanglier|Wildschwein|Jabalí|Кабан|Javali|Javali|イノシシ|멧돼지|野猪|野豬|Dzik|Yaban domuzu|Everzwijn|Кабан|Cinghiale|Divočák|Vildsvin|Villisika|Αγριογούρουνο|Vaddisznó|Villsvin|Diviak\n" +
 			"wolf|Wolf|Varg|Loup|Wolf|Lobo|Волк|Lobo|Lobo|オオカミ|늑대|狼|狼|Wilk|Kurt|Wolf|Вовк|Lupo|Vlk|Ulv|Susi|Λύκος|Farkas|Ulv|Vlk\n" +
 			"lox|Lox|Lox|Lox|Lox|Lox|Локс|Lox|Lox|ロックス|록스|洛克斯|洛克斯|Lox|Lox|Lox|Локс|Lox|Lox|Lox|Lox|Λοξ|Lox|Lox|Lox\n" +
-			"hen|Hen|Höna|Poule|Henne|Gallina|Курица|Galinha|Galinha|メンドリ|암탉|母鸡|母雞|Kura|Tavuk|Kip|Курка|Gallina|Slepice|Høne|Kana|Κότα|Tyúk|Høne|Sliepka\n";
+			            "hare|Hare|Hare|Lièvre|Hase|Liebre|Заяц|Lebre|Lebre|ノウサギ|산토끼|野兔|野兔|Zając|Tavşan|Haas|Заєць|Lepre|Zajíc|Hare|Jänis|Λαγός|Nyúl|Hare|Zajac\n" +
+            "hare_kit|Hare kit|Harunge|Levraut|Junghase|Cría de liebre|Зайчонок|Filhote de lebre|Cria de lebre|ノウサギの子|새끼 산토끼|小野兔|小野兔|Młody zając|Yavru tavşan|Jonge haas|Зайченя|Leprotto|Zajíče|Hareunge|Jäniksenpoikanen|Μικρό λαγού|Nyúlfi|Hareunge|Mláďa zajaca\n" +
+            "hen|Hen|Höna|Poule|Henne|Gallina|Курица|Galinha|Galinha|メンドリ|암탉|母鸡|母雞|Kura|Tavuk|Kip|Курка|Gallina|Slepice|Høne|Kana|Κότα|Tyúk|Høne|Sliepka\n";
 	}
 }

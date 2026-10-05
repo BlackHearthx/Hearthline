@@ -1,3 +1,11 @@
+## 1.1.0
+- Vanilla hares can now be tamed, commanded to follow/stay, and bred without another mod.
+- Adds small hare kits with growth, inherited stars, carry/steal and butcher-knife protection.
+- Hares eat carrots, turnips, Jotun Puffs and optional Apple items. Carrot is their default favorite, including existing configurations without a Hare entry.
+- Adds synchronized hare food, taming, feeding, growth, pregnancy and pen-limit settings.
+- Preserves nick008_HareKit prefabs for existing worlds and counts both kit types toward the pen cap.
+- Defers adult hare setup to TameableHares when installed; Hearthline's normal yard features remain available.
+
 ## 1.0.7
 - Pairs no longer stay pinned together: after a while, or if a fence blocks the way, they wander free for a bit so they can still find food. Hunger always wins.
 
