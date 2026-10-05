@@ -82,6 +82,24 @@ public static class HareAudit
             Mod("HareLivestock").GetMethod("Configure", Any).Invoke(null, new object[] { thirdPartyScene }); Assert(moddedHare.GetComponent(Mod("HearthlineHareAI")) == null && moddedHare.GetComponent(Game("MonsterAI")) != null, "TameableHares owns adult AI when installed");
             var coexistPrefabs = ((System.Collections.IEnumerable)Game("ZNetScene").GetField("m_prefabs").GetValue(thirdPartyScene)).Cast<GameObject>().ToList(); GameObject coexistKit = coexistPrefabs.Single(p => p.name == "Hearthline_HareKit"); Assert(coexistKit.GetComponent(Game("MonsterAI")) == null && coexistKit.GetComponent(Game("AnimalAI")) != null, "Compatibility kit strips adult feeding AI"); infos.Remove("nick008.tameablehares");
             var rawHare = new GameObject("Hare"); rawHare.SetActive(false); Add(rawHare, "Character"); Add(rawHare, "AnimalAI"); Component disabledScene = newScene(rawHare); set("EnableHares", false); Mod("HareLivestock").GetMethod("Configure", Any).Invoke(null, new object[] { disabledScene }); Assert(rawHare.GetComponent(Game("Humanoid")) == null && rawHare.GetComponent(Game("Procreation")) == null, "Disabled hare feature preserves native adult components"); Assert(((System.Collections.IList)Game("ZNetScene").GetField("m_prefabs").GetValue(disabledScene)).Count == 4, "Disabling feature retains kit IDs for existing saves");
+            set("DebugLogging", false); set("MaxStarLevel", 2);
+            foreach (string patch in new[] { "ProcreationPatch", "VanillaAnimalLevelPatch", "VanillaAnimalLoadPatch", "VanillaEggQualityPatch" })
+                harmonyType.GetMethod("PatchAll", new[] { typeof(Type) }).Invoke(harmony, new object[] { Mod("Patches." + patch) });
+            Assert(true, "Star restriction patches and native Procreate transpiler install in Unity Mono");
+            foreach (string name in new[] { "Hen", "Lox", "Chicken" }) {
+                var animal = new GameObject(name + "(Clone)"); animal.SetActive(false); Component ch = Add(animal, "Character");
+                object[] args = { ch, 3 }; Mod("Patches.VanillaAnimalLevelPatch").GetMethod("Prefix", Any).Invoke(null, args);
+                Assert((int)args[1] == 1, name + " rejects inherited starred level");
+            }
+            var chick = new GameObject("CustomChick(Clone)"); chick.SetActive(false); Component chickChar = Add(chick, "Character"); Component growChick = Add(chick, "Growup");
+            var henPrefab = new GameObject("Hen"); henPrefab.SetActive(false); Game("Growup").GetField("m_grownPrefab").SetValue(growChick, henPrefab);
+            object[] chickArgs = { chickChar, 3 }; Mod("Patches.VanillaAnimalLevelPatch").GetMethod("Prefix", Any).Invoke(null, chickArgs);
+            Assert((int)chickArgs[1] == 1, "Growup resolves adult species before clamping");
+            var egg = new GameObject("ChickenEgg(Clone)"); egg.SetActive(false); Component dropEgg = Add(egg, "ItemDrop");
+            object[] eggArgs = { dropEgg, 3 }; Mod("Patches.VanillaEggQualityPatch").GetMethod("Prefix", Any).Invoke(null, eggArgs);
+            Assert((int)eggArgs[1] == 1, "Old and new chicken eggs reject starred quality");
+            set("EnableMod", false); object[] disabledArgs = { chickChar, 3 }; Mod("Patches.VanillaAnimalLevelPatch").GetMethod("Prefix", Any).Invoke(null, disabledArgs);
+            Assert((int)disabledArgs[1] == 3, "Disabled Hearthline leaves requested levels alone");
             File.WriteAllText(Workspace + @"\_checks\HearthlineAuditUnity\result.txt", "PASS " + checks);
             EditorApplication.Exit(0);
         }

@@ -12,11 +12,27 @@ namespace BlackHearthx.Hearthline
 	{
 		public const int VanillaMaxLevel = 3;
 
+		// Verified against serialized vanilla spawn entries, not unused LevelEffects setups.
+		public static bool SupportsVanillaStars(string prefab)
+		{
+			prefab = (prefab ?? string.Empty).Replace("(Clone)", string.Empty).Trim();
+			switch (prefab)
+			{
+				case "Boar": case "Wolf": case "Asksvin": case "Hare":
+				case "Moose": case "Deer": case "Neck": return true;
+				default: return false;
+			}
+		}
+
+		public static int BreedingLevel(string adultPrefab, int level)
+		{
+			return SupportsVanillaStars(adultPrefab) ? Math.Max(1, Math.Min(level, VanillaMaxLevel)) : 1;
+		}
+
 		public static int MaxAllowedLevel(int maxStars, bool extendedLevelsAvailable)
 		{
 			int configuredLevel = Math.Max(0, maxStars) + 1;
-			int gameMax = extendedLevelsAvailable ? configuredLevel : VanillaMaxLevel;
-			return Math.Min(configuredLevel, gameMax);
+			return Math.Min(configuredLevel, VanillaMaxLevel);
 		}
 
 		/// <summary>

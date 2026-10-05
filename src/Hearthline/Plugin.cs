@@ -13,7 +13,7 @@ namespace BlackHearthx.Hearthline
 	{
 		public const string PluginGuid = "blackhearthx.hearthline";
 		public const string PluginName = "Hearthline";
-		public const string PluginVersion = "1.1.0";
+		public const string PluginVersion = "1.1.1";
 
 		internal const string CllcGuid = "org.bepinex.plugins.creaturelevelcontrol";
 
@@ -93,8 +93,8 @@ namespace BlackHearthx.Hearthline
 				"Max Star Level",
 				2,
 				new ConfigDescription(
-					"Highest star count reachable through breeding. Vanilla display and stats stop at 2 stars (level 3). Values above 2 need a creature-level mod such as CLLC.",
-					new AcceptableValueRange<int>(0, 10)));
+					"Highest star count reachable through breeding, only for species that have stars in vanilla. Always capped at 2 stars. Hens and lox cannot gain stars.",
+					new AcceptableValueRange<int>(0, 2)));
 			DebugLogging = Config.Bind(
 				"3. Debug",
 				"Enable Debug Logging",
@@ -251,6 +251,9 @@ namespace BlackHearthx.Hearthline
             _harmony.PatchAll(typeof(HareKitProtectionPatch));
             _harmony.PatchAll(typeof(HareKitCountPatch));
             _harmony.PatchAll(typeof(HareKitGrowthPatch));
+			_harmony.PatchAll(typeof(Patches.VanillaAnimalLevelPatch));
+			_harmony.PatchAll(typeof(Patches.VanillaAnimalLoadPatch));
+			_harmony.PatchAll(typeof(Patches.VanillaEggQualityPatch));
 			_harmony.PatchAll(typeof(Patches.ProcreationPatch));
 			_harmony.PatchAll(typeof(Patches.FastBreedAwakePatch));
 			_harmony.PatchAll(typeof(Patches.FastBreedProcreatePatch));
@@ -270,10 +273,7 @@ namespace BlackHearthx.Hearthline
 			_harmony.PatchAll(typeof(Patches.CarryBlocksAttackPatch));
 
 			Log.LogInfo($"{PluginName} {PluginVersion} loaded. Z steals/carries; E stays vanilla pet.");
-			if (MaxStarLevel.Value > 2 && !IsCllcPresent())
-			{
-				Log.LogWarning("Max Star Level is above 2 and CLLC was not detected. Offspring will cap at vanilla 2 stars.");
-			}
+
 		}
 
 		private void Update()
@@ -303,12 +303,13 @@ namespace BlackHearthx.Hearthline
 
 		internal static bool RollUpgrade(float chancePercent)
 		{
-			return Random.Range(0f, 100f) <= chancePercent;
+			return chancePercent > 0f && Random.Range(0f, 100f) < chancePercent;
 		}
 
 		internal static float UpgradeChanceFor(Procreation procreation)
 		{
 			string prefab = YardTables.StripClone(((Component)procreation).gameObject.name);
+			if (!Bloodline.SupportsVanillaStars(prefab)) return 0f;
 			float baseline = YardTables.ChanceForPrefab(prefab, YardTables.ParseChances(ChanceOverrides.Value), UpgradeChancePercent.Value);
 			return YardTables.RollChance(baseline, HasFavoriteMeal(procreation), FavoriteUpgradeChance.Value);
 		}

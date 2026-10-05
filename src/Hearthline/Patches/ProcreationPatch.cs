@@ -34,10 +34,11 @@ namespace BlackHearthx.Hearthline.Patches
 				return;
 			}
 
-			int parentLevel = parent.GetLevel();
+			int parentLevel = VanillaStars.ParentLevel(parent);
 			int maxLevel = Bloodline.MaxAllowedLevel(Plugin.MaxStarLevel.Value, Plugin.IsCllcPresent());
 			bool rolled = Plugin.RollUpgrade(Plugin.UpgradeChanceFor(__instance));
 			int nextMin = Bloodline.RaisedMinOffspringLevel(__state, parentLevel, maxLevel, rolled);
+			nextMin = Bloodline.BreedingLevel(VanillaStars.AdultPrefab(parent), nextMin);
 			__instance.m_minOffspringLevel = nextMin;
 
 			// Only log on an actual birth tick — Procreate also runs for love points.
@@ -84,10 +85,17 @@ namespace BlackHearthx.Hearthline.Patches
 			FieldInfo tameableField = AccessTools.Field(typeof(Procreation), "m_tameable");
 			MethodInfo replacement = AccessTools.Method(typeof(ProcreationPatch), nameof(MayStartProcreate));
 			List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
+			MethodInfo getLevel = AccessTools.Method(typeof(Character), nameof(Character.GetLevel));
+			MethodInfo breedingLevel = AccessTools.Method(typeof(VanillaStars), nameof(VanillaStars.ParentLevel));
 			int replaced = 0;
 
 			for (int i = 0; i < codes.Count; i++)
 			{
+				if (codes[i].Calls(getLevel))
+				{
+					codes[i].opcode = OpCodes.Call;
+					codes[i].operand = breedingLevel;
+				}
 				// Current game: ldarg.0 / ldfld m_tameable / callvirt Tameable.IsTamed
 				if (replaced == 0
 				    && i + 2 < codes.Count

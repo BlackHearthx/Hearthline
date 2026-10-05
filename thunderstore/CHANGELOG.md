@@ -1,3 +1,8 @@
+## 1.1.1
+- Restricts breeding stars to species with starred vanilla spawns, always capped at two stars.
+- Hens, chicks, eggs and lox cannot gain or inherit stars, including from favorite meals.
+- Existing unsupported breeding animals return to level 1 when loaded by the world owner.
+
 ## 1.1.0
 - Vanilla hares can now be tamed, commanded to follow/stay, and bred without another mod.
 - Adds small hare kits with growth, inherited stars, carry/steal and butcher-knife protection.

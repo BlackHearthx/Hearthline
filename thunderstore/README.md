@@ -25,7 +25,7 @@ By **BlackHearthx**.
 | **Hare livestock** | Tame and breed Mistlands hares, with small kits that grow |
 | **Wild herds** | Wild adults can breed while that area is loaded; cubs stay wild |
 
-Star cap is **2★**. For higher stars you need [CLLC](https://thunderstore.io/c/valheim/p/Smoothbrain/CreatureLevelAndLootControl/).
+Stars are limited to species that have them in vanilla: boar, wolf, asksvin, hare, moose, deer and neck. The cap is always **2★**, including with CLLC. Hens, chicks and lox stay at **0★**; favorite meals cannot grant them stars. Existing starred breeding animals outside this list return to level 1 when loaded by the world owner.
 
 ---
 
@@ -33,7 +33,7 @@ Star cap is **2★**. For higher stars you need [CLLC](https://thunderstore.io/c
 
 ### 1. Breed for stars
 
-Keep two fed adults of the same species. When a baby (or egg) is born, there is a chance it is **one star above** the parent.
+Keep two fed adults of the same species. For an eligible species, when a baby is born, there is a chance it is **one star above** the parent.
 
 Tamed pairs keep breeding while you are away. The pen still stops at its cap. They need a partner nearby, and food on the ground once they get hungry. A pregnancy that already started still finishes. Wild herds do not catch up when that area was unloaded.
 
@@ -54,8 +54,8 @@ Favorites must be foods that animal **already eats**. Hearthline adds food suppo
 | --- | --- |
 | Boar | Carrot |
 | Wolf | Raw Meat |
-| Lox | Barley |
-| Hen | Barley |
+| Lox | Barley (no star bonus) |
+| Hen | Barley (no star bonus) |
 | Hare | Carrot |
 | Asksvin | Vineberry |
 | Moose | Lingonberry |
@@ -122,7 +122,7 @@ If TameableHares is installed, it controls the adult hares and their food/timing
 | **Mate draw** | Adultos calmos e alimentados vão até o parceiro e ficam juntos |
 | **Manadas** | Selvagens podem procriar; filhote nasce selvagem |
 
-Teto **2★** (acima disso precisa CLLC). Não use com BreedingUpgrades ou Procreation Plus.
+Estrelas só nas espécies que têm estrelas no vanilla, com teto **2★**. Galinhas, pintinhos e lox ficam sem estrelas, mesmo com comida favorita. Animais reprodutores fora da lista voltam ao nível 1 ao carregar pelo dono do mundo. Não use com BreedingUpgrades ou Procreation Plus.
 
 ---
 

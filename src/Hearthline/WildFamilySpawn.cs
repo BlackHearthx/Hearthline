@@ -140,7 +140,7 @@ namespace BlackHearthx.Hearthline
 			if (cub != null)
 			{
 				cub.SetTamed(false);
-				cub.SetLevel(adult.GetLevel());
+				cub.SetLevel(Patches.VanillaStars.ParentLevel(adult));
 			}
 
 			if (Plugin.DebugLogging.Value)

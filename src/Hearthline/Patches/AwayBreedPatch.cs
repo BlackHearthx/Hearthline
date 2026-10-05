@@ -212,7 +212,7 @@ namespace BlackHearthx.Hearthline.Patches
 			}
 
 			int originalMin = procreation.m_minOffspringLevel;
-			int parentLevel = parent.GetLevel();
+			int parentLevel = VanillaStars.ParentLevel(parent);
 			int maxLevel = Bloodline.MaxAllowedLevel(Plugin.MaxStarLevel.Value, Plugin.IsCllcPresent());
 			Transform transform = ((Component)procreation).transform;
 			int spawned = 0;
@@ -220,7 +220,7 @@ namespace BlackHearthx.Hearthline.Patches
 			{
 				bool rolled = Plugin.RollUpgrade(Plugin.UpgradeChanceFor(procreation));
 				int min = Bloodline.RaisedMinOffspringLevel(originalMin, parentLevel, maxLevel, rolled);
-				int level = Mathf.Max(min, parentLevel);
+				int level = Bloodline.BreedingLevel(VanillaStars.AdultPrefab(parent), Mathf.Max(min, parentLevel));
 				GameObject prefab = ResolveOffspring(procreation, offspringPrefab, transform.position);
 				if (prefab == null)
 				{
